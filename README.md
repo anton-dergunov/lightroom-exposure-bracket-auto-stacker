@@ -92,14 +92,15 @@ Below are some frequently asked questions regarding the design and implementatio
 
 ### Q: Can I auto-stack images that are already in the Lightroom library using this plugin?  
 
-**A:** No. The auto-stacking process requires the images to be imported during the workflow. The Lightroom SDK does not currently support stacking for images already present in the library. While tools like [Any Source](https://johnrellis.com/lightroom/anysource.htm) offer workarounds, their functionality is similar to Lightroom’s native "Auto-Stack by Capture Time" and does not leverage EXIF metadata for improved grouping.
+**A:** No. The auto-stacking process requires the images to be imported during the workflow. The Lightroom SDK does not currently expose an API for stacking images already present in the library. The tool [Any Source](https://johnrellis.com/lightroom/anysource.htm) implements workarounds to make it work, but their functionality is similar to Lightroom’s native "Auto-Stack by Capture Time" and does not leverage EXIF metadata for robust grouping.
 
 ### Q: Why is there a separate Python script for group detection? Why not integrate it into the Lightroom plugin?  
 
-**A:** The group detection process relies on detailed EXIF metadata, which can only be accessed reliably outside of Lightroom’s import process. Since the Lightroom SDK limits metadata access to photos already in the library—and stacking can only occur during import—the Python script serves as a dedicated pre-processing step to accurately detect and group the images before they enter Lightroom.
+**A:** Group detection relies on EXIF metadata. While the Lightroom SDK provides an API for accessing this metadata, it can only be used for photos that are already in the library. However, since stacking can only be performed at the time of import (see previous question), the plugin cannot use this API for grouping. For this reason, I chose to handle group detection separately in a dedicated Python script.
 
 ### Q: Why is it required to Collapse All Stacks before merging them?  
-**A:**  This step is required so that HDR merge is correctly applied to each stack. Unfortunately, Lightroom SDK does not provide a way to collapse stacks programmatically, so it must be done via the menu.
+
+**A:** This step is required so that HDR merge is correctly applied to each stack. Unfortunately, Lightroom SDK does not provide a way to collapse stacks programmatically, so it must be done via the menu.
 
 ## License
 
