@@ -24,9 +24,13 @@ def main():
     arg_parser.add_argument("--output", required=True, help="Path to the output file listing the detected groups.")
     args = arg_parser.parse_args()
 
-    image_files = glob.glob(os.path.join(args.input_path, f"*.{args.extension}"))
+    image_files = [
+        os.path.join(args.input, file)
+        for file in os.listdir(args.input)
+        if file.lower().endswith(f".{args.extension.lower()}")
+    ]
     if not image_files:
-        print(f"Error: No files found with extension {args.extension} in {args.input_path}.")
+        print(f"Error: No files found with extension {args.extension} in {args.input}.")
         exit(1)
 
     with ExifToolHelper() as et:
@@ -89,13 +93,13 @@ def main():
             if not abs(exposure_compensations[0] - mean_rest) < 1e-6:
                 print(f"Warning: The first exposure compensation in group with SourceFile {group[0]['SourceFile']} is not the mean of the rest.")
 
-    with open(args.output_path, "w", encoding="utf-8") as f:
+    with open(args.output, "w", encoding="utf-8") as f:
         for group in groups:
             f.write("#group\n")
             for item in group:
                 f.write(f"{item['SourceFile']}\n")
 
-    print(f"Detected {len(groups)} groups and wrote the results to {args.output_path}.")
+    print(f"Detected {len(groups)} groups and wrote the results to {args.output}.")
 
 
 if __name__ == "__main__":
