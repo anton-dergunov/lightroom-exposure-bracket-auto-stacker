@@ -1,8 +1,10 @@
 from datetime import datetime
 import argparse
 from exiftool import ExifToolHelper
-import glob
 import os
+from tqdm import tqdm
+import signal
+import sys
 
 
 ATTRIBUTES = [
@@ -17,7 +19,14 @@ ATTRIBUTES = [
 ]
 
 
+def handle_interrupt(signal, frame):
+    print("\nInterrupted, no output file written.")
+    sys.exit(1)
+
+
 def main():
+    signal.signal(signal.SIGINT, handle_interrupt)
+
     arg_parser = argparse.ArgumentParser(description="Group Sony bracketed photos.")
     arg_parser.add_argument("--input", required=True, help="Path to the directory containing the Sony bracketed photos.")
     arg_parser.add_argument("--extension", default="ARW", help="Extension of the photos files.")
@@ -33,8 +42,10 @@ def main():
         print(f"Error: No files found with extension {args.extension} in {args.input}.")
         exit(1)
 
+    metadata = []
     with ExifToolHelper() as et:
-        metadata = et.get_metadata(image_files)
+        for file in tqdm(image_files, desc="Reading files metadata", unit="file"):
+            metadata.extend(et.get_metadata([file]))
 
     filtered_metadata = [{key: item.get(key, None) for key in ATTRIBUTES} for item in metadata]
     filtered_metadata.sort(key=lambda x: x.get("SourceFile", ""))
@@ -92,6 +103,9 @@ def main():
             mean_rest = sum(exposure_compensations[1:]) / (len(exposure_compensations) - 1)
             if not abs(exposure_compensations[0] - mean_rest) < 1e-6:
                 print(f"Warning: The first exposure compensation in group with SourceFile {group[0]['SourceFile']} is not the mean of the rest.")
+
+    # Remove groups with only one photo
+    groups = [group for group in groups if len(group) > 1]
 
     with open(args.output, "w", encoding="utf-8") as f:
         for group in groups:
