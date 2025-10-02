@@ -46,9 +46,11 @@ def parse_groups_file(path):
 
 
 def load_metadata(files):
-    """Load metadata for a list of files via ExifTool."""
+    """Load metadata for a list of files via ExifTool (with tqdm)."""
+    metadata = []
     with ExifToolHelper() as et:
-        metadata = et.get_metadata(files)
+        for file in tqdm(files, desc="Reading metadata", unit="file"):
+            metadata.extend(et.get_metadata([file]))
     filtered = {item["SourceFile"]: {k: item.get(k) for k in ATTRIBUTES} for item in metadata}
     return filtered
 
@@ -92,20 +94,25 @@ def expected_hdr_file(group):
     return None
 
 
-def move_or_delete_files(group, keep_file, action, safety_dir):
-    """Remove redundant files: either move them to safety_dir or delete them."""
+def move_or_delete_files(group, keep_file, action, safety_dir, dry_run=False):
+    """Remove redundant files: either move them to safety_dir, delete them, or just show in dry-run."""
     moved = []
     for f in group:
         if f == keep_file:
             continue
-        if action == "move":
-            os.makedirs(safety_dir, exist_ok=True)
-            dest = os.path.join(safety_dir, os.path.basename(f))
-            shutil.move(f, dest)
-            moved.append(dest)
-        elif action == "delete":
-            os.remove(f)
-            moved.append(f"[DELETED] {f}")
+        dest = os.path.join(safety_dir, os.path.basename(f))
+        moved.append(f)
+        if dry_run:
+            if action == "move":
+                print(f"Would move: {f} -> {dest}")
+            elif action == "delete":
+                print(f"Would delete: {f}")
+        else:
+            if action == "move":
+                os.makedirs(safety_dir, exist_ok=True)
+                shutil.move(f, dest)
+            elif action == "delete":
+                os.remove(f)
     return moved
 
 
@@ -117,6 +124,11 @@ def main():
         choices=["move", "delete"],
         default="move",
         help="Whether to move redundant files to a safety folder (default) or permanently delete them.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show which files would be moved/deleted without actually performing the action.",
     )
     args = parser.parse_args()
 
@@ -132,7 +144,10 @@ def main():
     total_removed = 0
     warnings = 0
 
-    for group in tqdm(groups, desc="Processing groups", unit="group"):
+    print("Processing groups...")
+    if args.dry_run:
+        print("Running in dry run mode, so no changes would be applied.")    
+    for group in groups:
         hdr_file = expected_hdr_file(group)
         if not hdr_file:
             print(f"Warning: No HDR DNG found for group starting with {os.path.basename(group[0])}. Skipping.")
@@ -147,8 +162,8 @@ def main():
         parent_dir = os.path.dirname(group[0])
         safety_dir = os.path.join(parent_dir, "_over_under_exposed")
 
-        removed = move_or_delete_files(group, keep_file, args.action, safety_dir)
-        total_removed += len(removed)
+        moved = move_or_delete_files(group, keep_file, args.action, safety_dir, dry_run=args.dry_run)
+        total_removed += len(moved)
         total_processed += 1
 
     print(f"\nDone. Processed {total_processed} groups.")
