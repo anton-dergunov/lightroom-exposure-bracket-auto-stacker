@@ -86,6 +86,25 @@ The solution is divided into two components:
    - If you are using Lightroom Classic, you can continue working with the HDR images directly within the library. To quickly find the HDR images, you can filter the Library View by the `.dng` extension.
    - If you primarily use the the non-Classic version of Lightroom, you can export the created HDR images. The generated HDR images are saved in the same folder as the original files, typically named using the first image’s filename followed by `-HDR.dng`, so you can copy them directly as well.
 
+5. **(Optional) Clean Up Redundant Exposures:**
+   After HDR images have been generated in Lightroom Classic, you can clean up the 
+   redundant over- and under-exposed RAW files while keeping only the properly exposed 
+   frame and the HDR result.
+
+   Run the cleanup script with your previously generated `groups.txt` file:
+
+   ```sh
+   python cleanup_sony_bracketed_photos.py --groups /path/to/groups.txt
+   ```
+
+   By default, redundant RAW files are moved into a safety subdirectory
+   named _over_under_exposed inside each photo folder.
+
+   If you prefer to delete them permanently, use:
+   ```sh
+   python cleanup_sony_bracketed_photos.py --groups /path/to/groups.txt --action delete
+   ```
+
 ## Implementation Q&A
 
 Below are some frequently asked questions regarding the design and implementation of this plugin:

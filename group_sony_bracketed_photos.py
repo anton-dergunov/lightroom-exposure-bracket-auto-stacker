@@ -1,3 +1,17 @@
+#!/usr/bin/env python3
+"""
+This script detects Sony bracketed photo sequences and groups them together.
+Sony cameras produce bracketed exposures (e.g., multiple shots at different
+exposure compensations), and this script analyzes EXIF metadata to identify
+those sequences.
+
+Usage:
+    python group_sony_bracketed_photos.py --input <photos_dir> --output <groups.txt>
+
+Example:
+    python group_sony_bracketed_photos.py --input ./photos --output groups.txt
+"""
+
 from datetime import datetime
 import argparse
 from exiftool import ExifToolHelper
