@@ -13,5 +13,7 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: pip install -r requirements.txt pytest
-      - name: Run tests
+      - name: Run unit tests
         run: pytest -v
+        env:
+          PYTHONPATH: .

@@ -1,7 +1,6 @@
 # Lightroom Auto Stacker Plugin
 
-[![Tests](actions/workflows/tests.yaml/badge.svg)](actions/workflows/tests.yaml)
-
+[![Tests](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/actions/workflows/tests.yaml/badge.svg)](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/actions/workflows/tests.yaml)
 
 ![Demo](assets/demo.gif)
 
