@@ -1,5 +1,8 @@
 # Lightroom Auto Stacker Plugin
 
+[![Tests](actions/workflows/tests.yaml/badge.svg)](actions/workflows/tests.yaml)
+
+
 ![Demo](assets/demo.gif)
 
 ## Overview

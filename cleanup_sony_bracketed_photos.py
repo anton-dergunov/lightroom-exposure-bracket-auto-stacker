@@ -98,7 +98,7 @@ def move_or_delete_files(group, keep_file, action, safety_dir, dry_run=False):
     """Remove redundant files: either move them to safety_dir, delete them, or just show in dry-run."""
     moved = []
     for f in group:
-        if f == keep_file:
+        if keep_file and f == keep_file:
             continue
         dest = os.path.join(safety_dir, os.path.basename(f))
         moved.append(f)
@@ -124,6 +124,12 @@ def main():
         choices=["move", "delete"],
         default="move",
         help="Whether to move redundant files to a safety folder (default) or permanently delete them.",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["redundant", "all"],
+        default="redundant",
+        help="Whether to remove only redundant exposures (default) or all group images if HDR is available.",
     )
     parser.add_argument(
         "--dry-run",
@@ -162,7 +168,11 @@ def main():
         parent_dir = os.path.dirname(group[0])
         safety_dir = os.path.join(parent_dir, "_over_under_exposed")
 
-        moved = move_or_delete_files(group, keep_file, args.action, safety_dir, dry_run=args.dry_run)
+        if args.mode == "redundant":
+            moved = move_or_delete_files(group, keep_file, args.action, safety_dir, dry_run=args.dry_run)
+        else:  # mode == "all"
+            moved = move_or_delete_files(group, None, args.action, safety_dir, dry_run=args.dry_run)
+
         total_removed += len(moved)
         total_processed += 1
 
