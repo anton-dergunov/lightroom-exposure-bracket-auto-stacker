@@ -1,154 +1,115 @@
 import os
-import shutil
-import stat
-import tempfile
-import builtins
-import importlib
-import pytest
 
 import cleanup_sony_bracketed_photos as cleanup
 
-# A small fake ExifToolHelper to monkeypatch into modules.
-class FakeExifToolHelper:
+
+def setup_mapping_for_group(files, evs):
     """
-    Fake ExifToolHelper context manager for tests.
-    Initialize with a mapping: path -> metadata dict (with 'SourceFile' key).
-    get_metadata(files) returns list-of-dicts matching files order.
+    Helper to build a metadata mapping for a group.
+    evs: list of exposure compensation values (same length as files)
+    Returns mapping dict for FakeExifToolHelper.
     """
-    def __init__(self, mapping):
-        self._mapping = mapping
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        return False
-
-    def get_metadata(self, files):
-        out = []
-        for f in files:
-            # copy to avoid accidental mutation
-            md = dict(self._mapping.get(f, {}))
-            if "SourceFile" not in md:
-                md["SourceFile"] = f
-            out.append(md)
-        return out
+    mapping = {}
+    length = len(files)
+    for idx, f in enumerate(files, start=1):
+        mapping[f] = {
+            "SourceFile": f,
+            "MakerNotes:SequenceLength": length,
+            "MakerNotes:SequenceImageNumber": idx,
+            "EXIF:ExposureCompensation": evs[idx - 1],
+        }
+    return mapping
 
 
-def create_files(tmp_path, filenames):
-    paths = []
-    for name in filenames:
-        p = tmp_path / name
-        p.write_bytes(b"")  # empty file content is fine
-        # ensure that file is readable/writable
-        p.chmod(p.stat().st_mode | stat.S_IWUSR | stat.S_IRUSR)
-        paths.append(str(p))
-    return paths
-
-
-def test_detect_and_move_group(tmp_path, monkeypatch):
+def test_detect_and_move_group(tmp_path, monkeypatch, create_files, FakeExifToolHelper_cls):
     # Arrange: three files in a group (sequence length 3)
-    files = create_files(tmp_path, ["DSC0001.ARW", "DSC0002.ARW", "DSC0003.ARW"])
-    # Also create an HDR file matching the first base name (so expected_hdr_file finds it)
-    hdr_path = tmp_path / "DSC0001-HDR.dng"
-    hdr_path.write_bytes(b"hdr")
+    files = create_files(["DSC0001.ARW", "DSC0002.ARW", "DSC0003.ARW"])
+    # create HDR file (so expected_hdr_file finds it)
+    (tmp_path / "DSC0001-HDR.dng").write_bytes(b"hdr")
 
-    # Create fake metadata mapping
-    mapping = {
-        files[0]: {
-            "SourceFile": files[0],
-            "MakerNotes:SequenceLength": 3,
-            "MakerNotes:SequenceImageNumber": 1,
-            "EXIF:ExposureCompensation": -1,
-        },
-        files[1]: {
-            "SourceFile": files[1],
-            "MakerNotes:SequenceLength": 3,
-            "MakerNotes:SequenceImageNumber": 2,
-            "EXIF:ExposureCompensation": 0,
-        },
-        files[2]: {
-            "SourceFile": files[2],
-            "MakerNotes:SequenceLength": 3,
-            "MakerNotes:SequenceImageNumber": 3,
-            "EXIF:ExposureCompensation": 1,
-        },
-    }
+    mapping = setup_mapping_for_group(files, [-1, 0, 1])
 
-    # Monkeypatch the ExifToolHelper used in cleanup module
-    monkeypatch.setattr(cleanup, "ExifToolHelper", lambda: FakeExifToolHelper(mapping))
+    # Monkeypatch ExifToolHelper in the cleanup module to use our fake mapping
+    monkeypatch.setattr(
+        cleanup,
+        "ExifToolHelper",
+        lambda mapping=mapping: FakeExifToolHelper_cls(mapping),
+    )
 
-    # Parse groups - emulate a groups.txt content with a single group
-    groups = [files]  # groups is list of groups where each group is list of file paths
+    # Load metadata (this uses the patched ExifToolHelper under the hood)
+    metadata = cleanup.load_metadata(files)
 
-    # Test detect_properly_exposed
-    keep = cleanup.detect_properly_exposed(groups[0], cleanup.load_metadata([f for g in groups for f in g]))
-    assert keep == files[1]  # middle exposure (0 EV) should be chosen
+    # Detect properly exposed (middle exposure should be chosen)
+    keep = cleanup.detect_properly_exposed(files, metadata)
+    assert keep == files[1]
 
-    # Do a dry-run move and ensure nothing moved
+    # Dry-run move: should report the two redundant files (but not move)
     safety_dir = os.path.join(os.path.dirname(files[0]), "_over_under_exposed")
     assert not os.path.exists(safety_dir)
 
-    moved = cleanup.move_or_delete_files(groups[0], keep, "move", safety_dir, dry_run=True)
-    moved_expected = [f for f in groups[0] if f != keep]
-    # move_or_delete_files returns list of files that would be processed
-    assert set(moved) == set(moved_expected)
-    assert not os.path.exists(safety_dir)
-    # Ensure original files still exist
-    for f in files:
-        assert os.path.exists(f)
+    moved = cleanup.move_or_delete_files(files, keep, action="move", safety_dir=safety_dir, dry_run=True)
+    expected = [f for f in files if f != keep]
+    assert set(moved) == set(expected)
+    assert not os.path.exists(safety_dir)  # nothing moved on dry-run
 
-    # Now perform the actual move
-    moved_real = cleanup.move_or_delete_files(groups[0], keep, "move", safety_dir, dry_run=False)
-    # All non-kept files should be moved into safety_dir
-    assert os.path.exists(safety_dir)
-    dests = [os.path.join(safety_dir, os.path.basename(f)) for f in groups[0] if f != keep]
+    # Actual move
+    moved_real = cleanup.move_or_delete_files(files, keep, action="move", safety_dir=safety_dir, dry_run=False)
+    # non-kept files should be moved to safety dir
+    dests = [os.path.join(safety_dir, os.path.basename(f)) for f in files if f != keep]
     for dest in dests:
         assert os.path.exists(dest)
-    # kept file remains in place
+    # keep remains in original place
     assert os.path.exists(keep)
-    # move_or_delete_files returns list of files that were processed
-    assert set(moved_real) == set(moved_expected)
+    # moved_real should contain the original paths that were processed
+    assert set(moved_real) == set(expected)
 
-def test_delete_action(tmp_path, monkeypatch):
-    files = create_files(tmp_path, ["A1.ARW", "A2.ARW", "A3.ARW"])
-    # create HDR for first file
+
+def test_delete_action(tmp_path, monkeypatch, create_files, FakeExifToolHelper_cls):
+    # Arrange: three files in a group (sequence length 3)
+    files = create_files(["A1.ARW", "A2.ARW", "A3.ARW"])
     (tmp_path / "A1-HDR.dng").write_bytes(b"hdr")
 
-    mapping = {}
-    # All sequence length 3
-    mapping[files[0]] = {
-        "SourceFile": files[0],
-        "MakerNotes:SequenceLength": 3,
-        "MakerNotes:SequenceImageNumber": 1,
-        "EXIF:ExposureCompensation": -1,
-    }
-    mapping[files[1]] = {
-        "SourceFile": files[1],
-        "MakerNotes:SequenceLength": 3,
-        "MakerNotes:SequenceImageNumber": 2,
-        "EXIF:ExposureCompensation": 0,
-    }
-    mapping[files[2]] = {
-        "SourceFile": files[2],
-        "MakerNotes:SequenceLength": 3,
-        "MakerNotes:SequenceImageNumber": 3,
-        "EXIF:ExposureCompensation": 1,
-    }
+    mapping = setup_mapping_for_group(files, [-1, 0, 1])
+    monkeypatch.setattr(
+        cleanup,
+        "ExifToolHelper",
+        lambda mapping=mapping: FakeExifToolHelper_cls(mapping),
+    )
 
-    monkeypatch.setattr(cleanup, "ExifToolHelper", lambda: FakeExifToolHelper(mapping))
-
-    grp = [files]
-    keep = cleanup.detect_properly_exposed(grp[0], cleanup.load_metadata([f for g in grp for f in g]))
+    metadata = cleanup.load_metadata(files)
+    keep = cleanup.detect_properly_exposed(files, metadata)
     assert keep == files[1]
 
     safety_dir = os.path.join(os.path.dirname(files[0]), "_over_under_exposed")
-    # Delete non-kept files
-    removed = cleanup.move_or_delete_files(grp[0], keep, "delete", safety_dir, dry_run=False)
+    removed = cleanup.move_or_delete_files(files, keep, action="delete", safety_dir=safety_dir, dry_run=False)
+
     # The two others should be removed
     assert not os.path.exists(files[0])
     assert not os.path.exists(files[2])
     # kept file remains
     assert os.path.exists(keep)
-    # removed list should contain two original paths
     assert len(removed) == 2
+
+
+def test_all_mode_removes_everything(tmp_path, monkeypatch, create_files, FakeExifToolHelper_cls):
+    # "all" mode: remove (or move) every file in the group if HDR exists.
+    files = create_files(["B1.ARW", "B2.ARW", "B3.ARW"])
+    (tmp_path / "B1-HDR.dng").write_bytes(b"hdr")
+
+    mapping = setup_mapping_for_group(files, [-1, 0, 1])
+    monkeypatch.setattr(
+        cleanup,
+        "ExifToolHelper",
+        lambda mapping=mapping: FakeExifToolHelper_cls(mapping),
+    )
+
+    # Dry-run deleting everything
+    safety_dir = os.path.join(os.path.dirname(files[0]), "_over_under_exposed")
+    moved = cleanup.move_or_delete_files(files, keep_file=None, action="delete", safety_dir=safety_dir, dry_run=True)
+    assert set(moved) == set(files)
+
+    # Actual delete
+    removed = cleanup.move_or_delete_files(files, keep_file=None, action="delete", safety_dir=safety_dir, dry_run=False)
+    for f in files:
+        assert not os.path.exists(f)
+    assert len(removed) == 3

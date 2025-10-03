@@ -1,90 +1,102 @@
-import os
-import sys
-import io
-import importlib
-import tempfile
-import stat
-import builtins
 import pytest
 
 import group_sony_bracketed_photos as grouping
 
-# Fake ExifToolHelper similar to cleanup tests
-class FakeExifToolHelper:
-    def __init__(self, mapping):
-        self._mapping = mapping
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc, tb):
-        return False
-
-    def get_metadata(self, files):
-        out = []
-        for f in files:
-            md = dict(self._mapping.get(f, {}))
-            if "SourceFile" not in md:
-                md["SourceFile"] = f
-            out.append(md)
-        return out
-
-
-def create_files(tmp_path, filenames):
-    paths = []
-    for name in filenames:
-        p = tmp_path / name
-        p.write_bytes(b"")
-        p.chmod(p.stat().st_mode | stat.S_IWUSR | stat.S_IRUSR)
-        paths.append(str(p))
-    return paths
-
-
-def test_grouping_main_creates_groups_file(tmp_path, monkeypatch, capsys):
-    # Prepare files: make a bracket sequence of 3 which will be detected
-    files = create_files(tmp_path, ["DSC1001.ARW", "DSC1002.ARW", "DSC1003.ARW"])
-    # Build metadata mapping expected by grouping script
+def setup_group_mapping(files, start_ev=0):
+    """
+    Produce a mapping for a group where EVs are symmetric around 0 if possible.
+    files: list of file paths (ordered).
+    Returns mapping for FakeExifToolHelper.
+    """
     mapping = {}
-    # All files must include required attributes (EXIF:Make etc.)
-    for i, f in enumerate(files, start=1):
+    n = len(files)
+    # choose EVs: if n odd, symmetrical around 0
+    center = n // 2
+    evs = [i - center for i in range(n)]
+    for idx, f in enumerate(files, start=1):
         mapping[f] = {
             "SourceFile": f,
             "EXIF:Make": "SONY",
-            "EXIF:DateTimeOriginal": "2025:10:02 12:00:0{}".format(i),
+            "EXIF:DateTimeOriginal": f"2025:10:02 12:00:{idx:02d}",
             "EXIF:ExposureMode": 2,
-            "EXIF:ExposureCompensation": (i - 2),  # -1, 0, 1
+            "EXIF:ExposureCompensation": evs[idx - 1],
             "MakerNotes:ReleaseMode": 5,
-            "MakerNotes:SequenceImageNumber": i,
-            "MakerNotes:SequenceLength": 3,
+            "MakerNotes:SequenceImageNumber": idx,
+            "MakerNotes:SequenceLength": n,
+        }
+    return mapping
+
+
+def test_grouping_main_creates_groups_file(tmp_path, monkeypatch, create_files, FakeExifToolHelper_cls):
+    # Prepare group of 3
+    g1 = create_files(["DSC1001.ARW", "DSC1002.ARW", "DSC1003.ARW"])
+    # Prepare group of 5
+    g2 = create_files(["DSC2001.ARW", "DSC2002.ARW", "DSC2003.ARW", "DSC2004.ARW", "DSC2005.ARW"])
+    # Extra files that are not bracket sequences (should be ignored in final groups)
+    extras = create_files(["OTHER1.ARW", "OTHER2.ARW"])
+
+    mapping = {}
+    mapping.update(setup_group_mapping(g1))
+    mapping.update(setup_group_mapping(g2))
+    # Extras: mark them as SONY but SequenceLength == 1 (so not treated as bracket)
+    for idx, f in enumerate(extras, start=1):
+        mapping[f] = {
+            "SourceFile": f,
+            "EXIF:Make": "SONY",
+            "EXIF:DateTimeOriginal": f"2025:10:02 12:05:{idx:02d}",
+            "EXIF:ExposureMode": 2,
+            "EXIF:ExposureCompensation": 0,
+            "MakerNotes:ReleaseMode": 0,
+            "MakerNotes:SequenceImageNumber": 1,
+            "MakerNotes:SequenceLength": 1,
         }
 
-    # Monkeypatch ExifToolHelper used in grouping module
-    monkeypatch.setattr(grouping, "ExifToolHelper", lambda: FakeExifToolHelper(mapping))
+    # Patch ExifToolHelper in grouping module
+    monkeypatch.setattr(
+        grouping,
+        "ExifToolHelper",
+        lambda mapping=mapping: FakeExifToolHelper_cls(mapping),
+    )
 
     out_file = tmp_path / "groups.txt"
-    # Call main with args (simulate CLI)
-    argv = ["prog", "--input", str(tmp_path), "--output", str(out_file)]
-    monkeypatch.setattr("sys.argv", argv)
-    # Just call grouping.main to emulate command line run
+    # Simulate CLI args
+    monkeypatch.setattr("sys.argv", ["prog", "--input", str(tmp_path), "--output", str(out_file)])
     grouping.main()
 
-    # Validate the groups file exists and contains the expected lines
     assert out_file.exists()
-    content = out_file.read_text(encoding="utf-8").splitlines()
-    # Expect first line "#group", then three source files
-    assert content[0] == "#group"
-    # The three files should be present (order preserved)
-    assert any("DSC1001.ARW" in l for l in content)
-    assert any("DSC1002.ARW" in l for l in content)
-    assert any("DSC1003.ARW" in l for l in content)
+    lines = out_file.read_text(encoding="utf-8").splitlines()
 
-def test_grouping_skips_non_sony(tmp_path, monkeypatch, capsys):
-    # Create a file but mark it as non-SONY in metadata
-    files = create_files(tmp_path, ["X1.ARW"])
+    # Parse groups: split by '#group' markers and collect group sizes
+    groups = []
+    current = []
+    for line in lines:
+        if line.strip() == "#group":
+            if current:
+                groups.append(current)
+            current = []
+        else:
+            current.append(line.strip())
+    if current:
+        groups.append(current)
+
+    sizes = sorted([len(g) for g in groups])
+    assert sizes == [3, 5]  # one group of 3 and one group of 5 should be present
+    # ensure the groups file contains known filenames and does NOT contain extras
+    content = "\n".join(lines)
+    assert "DSC1001.ARW" in content
+    assert "DSC2005.ARW" in content
+    assert "OTHER1.ARW" not in content
+    assert "OTHER2.ARW" not in content
+
+
+def test_grouping_skips_non_sony(tmp_path, monkeypatch, create_files, FakeExifToolHelper_cls):
+    # Create a non-SONY file; the script should exit with SystemExit
+    files = create_files(["X1.ARW"])
     mapping = {
         files[0]: {
             "SourceFile": files[0],
-            "EXIF:Make": "CANON",
+            "EXIF:Make": "CANON",  # not SONY
             "EXIF:DateTimeOriginal": "2025:10:02 12:00:00",
             "EXIF:ExposureMode": 2,
             "EXIF:ExposureCompensation": 0,
@@ -93,9 +105,8 @@ def test_grouping_skips_non_sony(tmp_path, monkeypatch, capsys):
             "MakerNotes:SequenceLength": 1,
         }
     }
-    monkeypatch.setattr(grouping, "ExifToolHelper", lambda: FakeExifToolHelper(mapping))
+    monkeypatch.setattr(grouping, "ExifToolHelper", lambda mapping=mapping: FakeExifToolHelper_cls(mapping))
     out_file = tmp_path / "outgroups.txt"
     monkeypatch.setattr("sys.argv", ["prog", "--input", str(tmp_path), "--output", str(out_file)])
-    # Because the script calls exit(1) on non-SONY, capture SystemExit
     with pytest.raises(SystemExit):
         grouping.main()
