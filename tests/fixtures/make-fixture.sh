@@ -6,7 +6,7 @@
 #   make-fixture.sh -d DUMP.json ID    trim an existing `exiftool -j -G1 -a -n` dump
 #
 # Writes the fixture JSON to stdout. Fill in "kind", "source" and "groups" by hand.
-# Requires exiftool and jq.
+# Requires exiftool (override with EXIFTOOL=/path/to/exiftool) and jq.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 dump=""
@@ -16,7 +16,7 @@ id="$1"; shift
 if [ -n "$dump" ]; then
     frames=$(cat "$dump")
 else
-    frames=$(exiftool -j -n -G1 -a -@ "$here/tags.args" -ExifToolVersion "$@")
+    frames=$("${EXIFTOOL:-exiftool}" -j -n -G1 -a -@ "$here/tags.args" -ExifToolVersion "$@")
 fi
 
 printf '%s' "$frames" | jq --arg id "$id" --rawfile args "$here/tags.args" '

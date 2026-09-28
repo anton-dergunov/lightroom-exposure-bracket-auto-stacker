@@ -24,6 +24,9 @@ logic is tested against.
 - `groups`: the true grouping, labelled by hand. Each group lists two or more file names in shot order. Frames that
   belong to no group are left out. A true group can be one the plugin is not expected to find (see `notes`).
 - `source.files`: optional per-file links when the source has one page per photo.
+- `derived`: present when the originals' license does not allow redistribution (non-commercial or all rights
+  reserved). File names, dates and shutter counts are replaced; times of day, intervals and every bracket tag are
+  kept as the camera wrote them. The field says exactly what was changed.
 - `frames`: exiftool output (`-j -n -G1 -a`), keeping only the tags in [tags.args](tags.args). Keys are
   `Group:Tag`, because the same tag often appears in several groups (for example `ExifIFD:ExposureCompensation` and
   `Canon:ExposureCompensation`). Values are numeric (`-n`); exiftool's tag documentation explains them.
@@ -43,10 +46,10 @@ stored. If your camera records its bracket in a tag that is not listed, add it t
 
 | Brand | Complete sequences | Negatives and edge cases |
 |---|---|---|
-| Canon | 8 exposure brackets (EOS Rebel T8i CR3; 6D, 450D, 1D Mark IV CR2) | manual series, interval series, 16 bodies with bracketing off, single AEB frames |
-| Nikon | 3 exposure brackets (D80, D7000, D5200 without maker notes) | manual EV series that looks like a bracket, Z 8 |
+| Canon | 8 exposure brackets (EOS Rebel T8i CR3; 6D, 450D, 1D Mark IV CR2); derived: 70D (three back to back), 1D Mark II ×2 | manual series, interval series, 16 bodies with bracketing off, single AEB frames |
+| Nikon | 3 exposure brackets (D80, D7000, D5200 without maker notes) | manual EV series that looks like a bracket, Z 6, Z 8 |
 | Panasonic | 1 exposure bracket (DMC-TZ3), 2 partial 7-frame brackets (DMC-G1) | DC-G9 same-second frames |
 | Olympus / OM System | none: 1 focus-bracket frame and 2 camera-made focus stacks | E-M5 Mark III, OM-5 Mark II |
-| Fujifilm | none | X-S10 |
-| Pentax | none | K-1, KP, consecutive K-3 Mark III frames |
-| Sony | none yet | A7 IV, A7R V, A6700, ZV-E1 continuous burst |
+| Fujifilm | none | X-S10, X-T3 (derived) |
+| Pentax | derived: K-50 | K-1, KP, consecutive K-3 Mark III frames |
+| Sony | 2 exposure brackets shot RAW+JPEG (A7C II, ZV-1) | A7 IV, A7R V, A6700, ZV-E1 continuous burst |

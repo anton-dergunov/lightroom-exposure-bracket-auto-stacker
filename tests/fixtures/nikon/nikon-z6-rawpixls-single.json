@@ -1,0 +1,40 @@
+{
+  "id": "nikon-z6-rawpixls-single",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "CC BY-SA 4.0",
+    "author": "Ludger Heide (raw.pixls.us)"
+  },
+  "groups": [],
+  "notes": "Negative: single frame with self-timer. FocusShiftNumberShots reads 50 although focus shift was not used: it is a menu setting, not evidence of a sequence.",
+  "frames": [
+    {
+      "System:FileName": "Nikon - Z 6 - 12bit 12bit compressed (3:2).NEF",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON Z 6",
+      "IFD0:Software": "Ver.02.00",
+      "IFD0:DateTimeOriginal": "2019:11:29 17:15:20",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:ISO": 100,
+      "Nikon:ShootingMode": 8,
+      "Nikon:ReleaseMode": 5,
+      "Nikon:FocusShiftNumberShots": 50,
+      "Nikon:FNumber": 6.72717132202972,
+      "Nikon:ShutterCount": 746,
+      "Nikon:MultiExposureMode": 0,
+      "ExifIFD:ExposureTime": 1,
+      "ExifIFD:FNumber": 6.7,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2019:11:29 17:15:20",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTime": 24,
+      "ExifIFD:SubSecTimeOriginal": 24,
+      "ExifIFD:ExposureMode": 0,
+      "NikonSettings:AutoBracketModeM": 1,
+      "Composite:SubSecDateTimeOriginal": "2019:11:29 17:15:20.24+01:00"
+    }
+  ]
+}

@@ -23,6 +23,7 @@ def test_fixture_is_well_formed(path):
     assert fixture["id"] == path.stem
     assert fixture["kind"] in {"exposure", "focus", "none"}
     assert isinstance(fixture["complete"], bool)
+    assert isinstance(fixture.get("derived", ""), str)
     assert all(fixture["source"].get(k) for k in ("url", "license", "author"))
 
     names = [frame["System:FileName"] for frame in fixture["frames"]]

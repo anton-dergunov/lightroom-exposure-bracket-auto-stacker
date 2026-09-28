@@ -1,0 +1,34 @@
+{
+  "id": "fujifilm-x-t3-single",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "All rights reserved (original file notice)",
+    "author": "Stefan Weiberg (raw.pixls.us)"
+  },
+  "derived": "Derived: file names renumbered, dates set to 2020-01-01 and shutter counts offset. Times of day, intervals between frames and all bracket tags are as the camera wrote them.",
+  "groups": [],
+  "notes": "Negative: AutoBracketing 0, SequenceNumber 0, DriveMode single.",
+  "frames": [
+    {
+      "System:FileName": "DSCF0001.RAF",
+      "IFD0:Make": "FUJIFILM",
+      "IFD0:Model": "X-T3",
+      "IFD0:Software": "Digital Camera X-T3 Ver1.01",
+      "ExifIFD:ExposureTime": 0.25,
+      "ExifIFD:FNumber": 3.6,
+      "ExifIFD:ISO": 160,
+      "ExifIFD:DateTimeOriginal": "2020:01:01 16:54:12",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 1,
+      "FujiFilm:ExposureCount": 1,
+      "FujiFilm:AutoBracketing": 0,
+      "FujiFilm:SequenceNumber": 0,
+      "FujiFilm:DriveMode": 0,
+      "FujiFilm:DriveSpeed": 0,
+      "FujiFilm:ImageCount": 1000
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "pentax-k-50-bracket",
+  "kind": "exposure",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://discuss.pixls.us/t/11534",
+    "license": "CC BY-NC 4.0 (originals)",
+    "author": "Prugo_Photography (discuss.pixls.us)"
+  },
+  "derived": "Derived: file names renumbered, dates set to 2020-01-01 and shutter counts offset. Times of day, intervals between frames and all bracket tags are as the camera wrote them.",
+  "groups": [
+    [
+      "IMGP0001.DNG",
+      "IMGP0002.DNG",
+      "IMGP0003.DNG"
+    ]
+  ],
+  "notes": "In-camera DNGs, 3 frames 0/-2/+2 EV. AutoBracketing gives the EV step only; there is no position or length tag, and DriveMode stays single-frame. ShutterCount is consecutive.",
+  "frames": [
+    {
+      "System:FileName": "IMGP0001.DNG",
+      "IFD0:Make": "PENTAX",
+      "IFD0:Model": "PENTAX K-50",
+      "IFD0:Software": "K-50 Ver. 1.10",
+      "ExifIFD:ExposureTime": 0.008,
+      "ExifIFD:FNumber": 0,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:01 17:34:09",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 2,
+      "Pentax:ExposureTime": 0.008,
+      "Pentax:FNumber": 0,
+      "Pentax:ISO": 6,
+      "Pentax:ExposureCompensation": 0,
+      "Pentax:AutoBracketing": "6/3 0",
+      "Pentax:DriveMode": "0 0 0 0",
+      "Pentax:ShutterCount": 1000
+    },
+    {
+      "System:FileName": "IMGP0002.DNG",
+      "IFD0:Make": "PENTAX",
+      "IFD0:Model": "PENTAX K-50",
+      "IFD0:Software": "K-50 Ver. 1.10",
+      "ExifIFD:ExposureTime": 0.002,
+      "ExifIFD:FNumber": 0,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:01 17:34:09",
+      "ExifIFD:ExposureCompensation": -2,
+      "ExifIFD:ExposureMode": 2,
+      "Pentax:ExposureTime": 0.002,
+      "Pentax:FNumber": 0,
+      "Pentax:ISO": 6,
+      "Pentax:ExposureCompensation": -2,
+      "Pentax:AutoBracketing": "6/3 0",
+      "Pentax:DriveMode": "0 0 0 0",
+      "Pentax:ShutterCount": 1001
+    },
+    {
+      "System:FileName": "IMGP0003.DNG",
+      "IFD0:Make": "PENTAX",
+      "IFD0:Model": "PENTAX K-50",
+      "IFD0:Software": "K-50 Ver. 1.10",
+      "ExifIFD:ExposureTime": 0.03333333333,
+      "ExifIFD:FNumber": 0,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:01 17:34:09",
+      "ExifIFD:ExposureCompensation": 2,
+      "ExifIFD:ExposureMode": 2,
+      "Pentax:ExposureTime": 0.03333,
+      "Pentax:FNumber": 0,
+      "Pentax:ISO": 6,
+      "Pentax:ExposureCompensation": 2,
+      "Pentax:AutoBracketing": "6/3 0",
+      "Pentax:DriveMode": "0 0 0 0",
+      "Pentax:ShutterCount": 1002
+    }
+  ]
+}

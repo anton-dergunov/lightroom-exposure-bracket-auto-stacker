@@ -36,7 +36,21 @@ The solution is divided into two components:
 - **Lightroom Plugin**:  
   Reads the group description file and imports the grouped images into Lightroom, automatically stacking them in preparation for HDR processing. Once the stacks are created, you can use Lightroom's built-in HDR merge functionality to batch process the stacks.
 
-**Note:** The current implementation supports EXIF metadata from Sony cameras only. It has been tested on recent mirrorless and point-and-shoot models. If you use another camera manufacturer, please share sample bracketed images so the tool can be adapted accordingly.
+**Note:** The current implementation supports EXIF metadata from Sony cameras only. It has been tested on recent mirrorless and point-and-shoot models. Support for other brands is in progress; see [Camera support](docs/camera-support.md) for what each brand records and how far testing has got.
+
+## Help Wanted: Sample Photos
+
+Support for a camera can only be confirmed with real photos from it. If you own one of the cameras below (or any other), a single complete bracketed sequence helps a lot:
+
+- **Fujifilm** X-series: exposure and focus brackets
+- **OM System / Olympus**: exposure brackets and a complete focus bracket
+- **Canon** R-series (R5, R6, R7, R8, R10, R50): exposure and focus brackets
+- **Nikon** Z (Z6 III, Z8, Z9, Zf): exposure brackets and a focus-shift sequence
+- **Pentax**: any exposure bracket
+- **Panasonic** Lumix: focus bracket or Post Focus
+- **Any brand**: brackets of 5 or more frames, white-balance or other non-exposure brackets, fast bursts
+
+What to send: every frame of the sequence, straight from the camera (RAW or the camera's own JPEGs, not exported from Lightroom or Photoshop, which removes the needed information). Only the metadata is kept in this repository, never the pictures, and serial numbers, names and locations are left out. Please open an issue with a link to the files and say whether they can be used here.
 
 ## Installation
 
