@@ -1,0 +1,52 @@
+{
+  "id": "olympus-rawpixls-negatives",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "CC0 1.0",
+    "author": "raw.pixls.us contributors"
+  },
+  "groups": [],
+  "notes": "Negatives: E-M5 Mark III and OM-5 Mark II single shots.",
+  "frames": [
+    {
+      "System:FileName": "OLYMPUS__E-M5_Mark_III__PB290154.ORF",
+      "IFD0:Make": "OLYMPUS CORPORATION",
+      "IFD0:Model": "E-M5MarkIII",
+      "IFD0:Software": "Version 1.0",
+      "ExifIFD:ExposureTime": 0.001,
+      "ExifIFD:FNumber": 0,
+      "ExifIFD:ISO": 200,
+      "ExifIFD:DateTimeOriginal": "2019:11:29 13:07:45",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 0,
+      "Olympus:ExposureMode": 3,
+      "Olympus:FocusBracketStepSize": 0,
+      "Olympus:WhiteBalanceBracket": "0 0",
+      "Olympus:DriveMode": "0 0 0 0 0",
+      "Olympus:PanoramaMode": "0 0",
+      "Olympus:StackedImage": "0 0"
+    },
+    {
+      "System:FileName": "OM_Digital_Solutions__OM-5MarkII__OM_System_OM-5_2_regular.ORF",
+      "IFD0:Make": "OM Digital Solutions",
+      "IFD0:Model": "OM-5MarkII",
+      "IFD0:Software": "Version 1.0",
+      "ExifIFD:ExposureTime": 0.0008,
+      "ExifIFD:FNumber": 4,
+      "ExifIFD:ISO": 200,
+      "ExifIFD:DateTimeOriginal": "2025:09:05 16:56:31",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 1,
+      "Olympus:ExposureMode": 1,
+      "Olympus:FocusBracketStepSize": 0,
+      "Olympus:WhiteBalanceBracket": "0 0",
+      "Olympus:DriveMode": "0 0 0 0 0 1",
+      "Olympus:PanoramaMode": "0 0",
+      "Olympus:StackedImage": "0 0",
+      "Composite:SubSecDateTimeOriginal": "2025:09:05 16:56:31+01:00"
+    }
+  ]
+}

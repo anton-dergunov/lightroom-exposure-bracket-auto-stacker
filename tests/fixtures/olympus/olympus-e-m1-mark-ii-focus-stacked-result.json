@@ -1,0 +1,45 @@
+{
+  "id": "olympus-e-m1-mark-ii-focus-stacked-result",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://www.flickr.com/photos/sanmartin/49660544897/",
+    "license": "CC BY-SA 2.0",
+    "author": "Gilles San Martin"
+  },
+  "groups": [],
+  "notes": "A camera-made focus stack of 15 frames (StackedImage 9 15); none of the source frames were published.",
+  "frames": [
+    {
+      "System:FileName": "Porcellio_spinicornis_49660544897.jpg",
+      "IFD0:Make": "OLYMPUS CORPORATION",
+      "IFD0:Model": "E-M1MarkII",
+      "IFD0:Software": "darktable 3.1.0~git605.11439a894",
+      "IFD0:DateTimeOriginal": "2020:03:14 03:50:52",
+      "ExifIFD:ExposureTime": 0.02,
+      "ExifIFD:FNumber": 4.5,
+      "ExifIFD:ISO": 200,
+      "ExifIFD:DateTimeOriginal": "2020:03:14 03:50:52",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 1,
+      "Olympus:ExposureMode": 1,
+      "Olympus:FocusBracketStepSize": 7,
+      "Olympus:WhiteBalanceBracket": "0 0",
+      "Olympus:DriveMode": "0 0 0 0 4",
+      "Olympus:PanoramaMode": "0 0",
+      "Olympus:StackedImage": "9 15",
+      "XMP-exif:DateTimeOriginal": "2020:03:14 03:50:52",
+      "XMP-exif:ExposureCompensation": 0,
+      "XMP-exif:ExposureMode": 1,
+      "XMP-exif:ExposureTime": 0.02,
+      "XMP-exif:FNumber": 4.5,
+      "XMP-exif:ISO": [
+        200
+      ],
+      "XMP-tiff:Make": "OLYMPUS CORPORATION    ",
+      "XMP-tiff:Model": "E-M1MarkII      ",
+      "XMP-tiff:Software": "digiKam-5.6.0"
+    }
+  ]
+}

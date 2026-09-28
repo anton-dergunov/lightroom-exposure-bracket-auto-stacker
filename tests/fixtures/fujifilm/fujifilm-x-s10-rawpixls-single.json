@@ -1,0 +1,33 @@
+{
+  "id": "fujifilm-x-s10-rawpixls-single",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "CC0 1.0",
+    "author": "raw.pixls.us contributors"
+  },
+  "groups": [],
+  "notes": "Negative: AutoBracketing 0, SequenceNumber 0, DriveMode single.",
+  "frames": [
+    {
+      "System:FileName": "Fujifilm - X-S10 - 14bit 14bit compressed (3:2).RAF",
+      "IFD0:Make": "FUJIFILM",
+      "IFD0:Model": "X-S10",
+      "IFD0:Software": "Digital Camera X-S10 Ver1.00",
+      "ExifIFD:ExposureTime": 0.3571428571,
+      "ExifIFD:FNumber": 4,
+      "ExifIFD:ISO": 160,
+      "ExifIFD:DateTimeOriginal": "2020:11:28 18:42:31",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 0,
+      "FujiFilm:ExposureCount": 1,
+      "FujiFilm:AutoBracketing": 0,
+      "FujiFilm:SequenceNumber": 0,
+      "FujiFilm:DriveMode": 0,
+      "FujiFilm:DriveSpeed": 0,
+      "FujiFilm:ImageCount": 199
+    }
+  ]
+}

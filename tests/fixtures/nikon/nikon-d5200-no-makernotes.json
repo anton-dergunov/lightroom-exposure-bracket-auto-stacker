@@ -1,0 +1,71 @@
+{
+  "id": "nikon-d5200-no-makernotes",
+  "kind": "exposure",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/File:Dome_of_Basilica_of_Santa_Maria_del_Popolo_0EV.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Livioandronico2013 (Wikimedia Commons)",
+    "files": {
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_0EV.jpg": "https://commons.wikimedia.org/wiki/File:Dome_of_Basilica_of_Santa_Maria_del_Popolo_0EV.jpg",
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_-2EV.jpg": "https://commons.wikimedia.org/wiki/File:Dome_of_Basilica_of_Santa_Maria_del_Popolo_-2EV.jpg",
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_+2EV.jpg": "https://commons.wikimedia.org/wiki/File:Dome_of_Basilica_of_Santa_Maria_del_Popolo_%2B2EV.jpg"
+    }
+  },
+  "groups": [
+    [
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_0EV.jpg",
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_-2EV.jpg",
+      "Dome_of_Basilica_of_Santa_Maria_del_Popolo_+2EV.jpg"
+    ]
+  ],
+  "notes": "A real 0/-2/+2 bracket, but exported through Photoshop, which stripped the maker notes. Only EXIF time and ExposureCompensation remain, so grouping by maker notes is expected to miss it.",
+  "frames": [
+    {
+      "System:FileName": "Dome_of_Basilica_of_Santa_Maria_del_Popolo_+2EV.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D5200",
+      "IFD0:Software": "Adobe Photoshop CC 2014 (Windows)",
+      "ExifIFD:ExposureTime": 2,
+      "ExifIFD:FNumber": 8,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2015:07:18 18:15:20",
+      "ExifIFD:ExposureCompensation": 2,
+      "ExifIFD:SubSecTime": 80,
+      "ExifIFD:SubSecTimeOriginal": 80,
+      "ExifIFD:ExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2015:07:18 18:15:20.80"
+    },
+    {
+      "System:FileName": "Dome_of_Basilica_of_Santa_Maria_del_Popolo_-2EV.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D5200",
+      "IFD0:Software": "Adobe Photoshop CC 2014 (Windows)",
+      "ExifIFD:ExposureTime": 0.125,
+      "ExifIFD:FNumber": 8,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2015:07:18 18:15:20",
+      "ExifIFD:ExposureCompensation": -2,
+      "ExifIFD:SubSecTime": 50,
+      "ExifIFD:SubSecTimeOriginal": 50,
+      "ExifIFD:ExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2015:07:18 18:15:20.50"
+    },
+    {
+      "System:FileName": "Dome_of_Basilica_of_Santa_Maria_del_Popolo_0EV.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D5200",
+      "IFD0:Software": "Adobe Photoshop CC 2014 (Windows)",
+      "ExifIFD:ExposureTime": 0.5,
+      "ExifIFD:FNumber": 8,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2015:07:18 18:15:19",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTime": 80,
+      "ExifIFD:SubSecTimeOriginal": 80,
+      "ExifIFD:ExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2015:07:18 18:15:19.80"
+    }
+  ]
+}

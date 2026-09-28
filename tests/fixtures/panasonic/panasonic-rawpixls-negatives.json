@@ -1,0 +1,63 @@
+{
+  "id": "panasonic-rawpixls-negatives",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "CC0 1.0",
+    "author": "raw.pixls.us contributors"
+  },
+  "groups": [],
+  "notes": "Negatives: two DC-G9 frames in the same second with no bracket tags set.",
+  "frames": [
+    {
+      "System:FileName": "Panasonic__DC-G9__P1000475.RW2",
+      "IFD0:Software": "Ver.1.0",
+      "IFD0:ISO": 200,
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DC-G9",
+      "ExifIFD:ISO": 200,
+      "ExifIFD:SubSecTime": 806,
+      "ExifIFD:ExposureMode": 0,
+      "ExifIFD:ExposureTime": 0.01,
+      "ExifIFD:FNumber": 2.8,
+      "ExifIFD:DateTimeOriginal": "2018:05:17 11:50:52",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTimeOriginal": 806,
+      "Panasonic:ShootingMode": 6,
+      "Panasonic:BurstMode": 0,
+      "Panasonic:SequenceNumber": 0,
+      "Panasonic:BracketSettings": 0,
+      "Panasonic:TimerRecording": 0,
+      "Panasonic:HDR": 0,
+      "Panasonic:FocusBracket": 0,
+      "Panasonic:PostFocusMerging": "0 0",
+      "Composite:SubSecDateTimeOriginal": "2018:05:17 11:50:52.806+01:00"
+    },
+    {
+      "System:FileName": "Panasonic__DC-G9__P1000476.RW2",
+      "IFD0:Software": "Ver.1.0",
+      "IFD0:ISO": 200,
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DC-G9",
+      "ExifIFD:ISO": 200,
+      "ExifIFD:SubSecTime": 806,
+      "ExifIFD:ExposureMode": 0,
+      "ExifIFD:ExposureTime": 0.01,
+      "ExifIFD:FNumber": 2.8,
+      "ExifIFD:DateTimeOriginal": "2018:05:17 11:50:52",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTimeOriginal": 806,
+      "Panasonic:ShootingMode": 6,
+      "Panasonic:BurstMode": 0,
+      "Panasonic:SequenceNumber": 0,
+      "Panasonic:BracketSettings": 0,
+      "Panasonic:TimerRecording": 0,
+      "Panasonic:HDR": 0,
+      "Panasonic:FocusBracket": 0,
+      "Panasonic:PostFocusMerging": "0 0",
+      "Composite:SubSecDateTimeOriginal": "2018:05:17 11:50:52.806+01:00"
+    }
+  ]
+}

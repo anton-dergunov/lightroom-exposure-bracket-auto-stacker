@@ -1,0 +1,83 @@
+{
+  "id": "nikon-d7100-manual-series",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/Category:Exposure_bracketing",
+    "license": "CC BY-SA 4.0",
+    "author": "Kapitel (Wikimedia Commons)",
+    "files": {
+      "EV0_(test).jpg": "https://commons.wikimedia.org/wiki/File:EV0_(test).jpg",
+      "EV+1_(test).jpg": "https://commons.wikimedia.org/wiki/File:EV%2B1_(test).jpg",
+      "EV-1_(test).jpg": "https://commons.wikimedia.org/wiki/File:EV-1_(test).jpg"
+    }
+  },
+  "groups": [],
+  "notes": "Negative: exposure compensation set by hand to 0/+1/-1, frames 30 s to 3 min apart. Looks exactly like a bracket in EXIF; the maker notes say single frame.",
+  "frames": [
+    {
+      "System:FileName": "EV+1_(test).jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7100",
+      "IFD0:Software": "Ver.1.04",
+      "ExifIFD:ExposureTime": 0.005,
+      "ExifIFD:FNumber": 7.1,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:05 13:37:26",
+      "ExifIFD:ExposureCompensation": 1,
+      "ExifIFD:SubSecTime": 10,
+      "ExifIFD:SubSecTimeOriginal": 10,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:HDR": 0,
+      "Nikon:ShootingMode": 0,
+      "Nikon:ShutterCount": 35413,
+      "Nikon:MultiExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2020:01:05 13:37:26.10"
+    },
+    {
+      "System:FileName": "EV-1_(test).jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7100",
+      "IFD0:Software": "Ver.1.04",
+      "ExifIFD:ExposureTime": 0.003125,
+      "ExifIFD:FNumber": 9,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:05 13:40:02",
+      "ExifIFD:ExposureCompensation": -1,
+      "ExifIFD:SubSecTime": 80,
+      "ExifIFD:SubSecTimeOriginal": 80,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:HDR": 0,
+      "Nikon:ShootingMode": 0,
+      "Nikon:ShutterCount": 35441,
+      "Nikon:MultiExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2020:01:05 13:40:02.80"
+    },
+    {
+      "System:FileName": "EV0_(test).jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7100",
+      "IFD0:Software": "Ver.1.04",
+      "ExifIFD:ExposureTime": 0.004,
+      "ExifIFD:FNumber": 8,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2020:01:05 13:36:56",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTime": 90,
+      "ExifIFD:SubSecTimeOriginal": 90,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:HDR": 0,
+      "Nikon:ShootingMode": 0,
+      "Nikon:ShutterCount": 35407,
+      "Nikon:MultiExposureMode": 0,
+      "Composite:SubSecDateTimeOriginal": "2020:01:05 13:36:56.90"
+    }
+  ]
+}

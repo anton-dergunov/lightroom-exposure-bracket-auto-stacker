@@ -1,0 +1,55 @@
+{
+  "id": "olympus-e-m1-mark-ii-focus-partial",
+  "kind": "focus",
+  "complete": false,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://www.flickr.com/photos/melahi/51215613669/",
+    "license": "Public Domain Mark 1.0",
+    "author": "melahi (Flickr)",
+    "files": {
+      "C3171210.jpg": "https://www.flickr.com/photos/melahi/51215613669/",
+      "C3171219.jpg": "https://www.flickr.com/photos/melahi/51214136627/"
+    }
+  },
+  "groups": [],
+  "notes": "C3171210 is shot 1 of a 9-frame focus bracket (DriveMode 5 with the focus bit); frames 2-9 were not published. C3171219 is the camera's own focus-stacked result (StackedImage 9 9): same timestamp and exposure as shot 1, single-shot drive mode.",
+  "frames": [
+    {
+      "System:FileName": "C3171210.jpg",
+      "IFD0:Make": "OLYMPUS CORPORATION",
+      "IFD0:Model": "E-M1MarkII",
+      "IFD0:Software": "Version 3.0",
+      "ExifIFD:ExposureTime": 0.0125,
+      "ExifIFD:FNumber": 4,
+      "ExifIFD:ISO": 200,
+      "ExifIFD:DateTimeOriginal": "2021:04:17 09:21:16",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 1,
+      "Olympus:ExposureMode": 1,
+      "Olympus:FocusBracketStepSize": 5,
+      "Olympus:WhiteBalanceBracket": "0 0",
+      "Olympus:DriveMode": "5 1 64 0 4",
+      "Olympus:PanoramaMode": "0 0",
+      "Olympus:StackedImage": "0 0"
+    },
+    {
+      "System:FileName": "C3171219.jpg",
+      "IFD0:Make": "OLYMPUS CORPORATION",
+      "IFD0:Model": "E-M1MarkII",
+      "IFD0:Software": "Version 3.0",
+      "ExifIFD:ExposureTime": 0.0125,
+      "ExifIFD:FNumber": 4,
+      "ExifIFD:ISO": 200,
+      "ExifIFD:DateTimeOriginal": "2021:04:17 09:21:16",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:ExposureMode": 1,
+      "Olympus:ExposureMode": 1,
+      "Olympus:FocusBracketStepSize": 5,
+      "Olympus:WhiteBalanceBracket": "0 0",
+      "Olympus:DriveMode": "0 0 0 0 4",
+      "Olympus:PanoramaMode": "0 0",
+      "Olympus:StackedImage": "9 9"
+    }
+  ]
+}

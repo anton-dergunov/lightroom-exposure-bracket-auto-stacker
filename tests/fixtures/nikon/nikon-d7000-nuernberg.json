@@ -1,0 +1,92 @@
+{
+  "id": "nikon-d7000-nuernberg",
+  "kind": "exposure",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/File:Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A1.jpg",
+    "license": "CC BY-SA 3.0",
+    "author": "NatiSythen (Wikimedia Commons)",
+    "files": {
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A1.jpg": "https://commons.wikimedia.org/wiki/File:Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A1.jpg",
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A2.jpg": "https://commons.wikimedia.org/wiki/File:Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A2.jpg",
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A3.jpg": "https://commons.wikimedia.org/wiki/File:Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A3.jpg"
+    }
+  },
+  "groups": [
+    [
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A2.jpg",
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A3.jpg",
+      "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A1.jpg"
+    ]
+  ],
+  "notes": "In-camera JPEGs, order -,0,+. File names do not follow shot order (A2, A3, A1); ShutterCount and sub-second time do.",
+  "frames": [
+    {
+      "System:FileName": "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A1.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7000",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 1.3,
+      "ExifIFD:FNumber": 20,
+      "ExifIFD:ISO": 1000,
+      "ExifIFD:DateTimeOriginal": "2012:03:17 10:28:16",
+      "ExifIFD:ExposureCompensation": 2,
+      "ExifIFD:SubSecTime": 90,
+      "ExifIFD:SubSecTimeOriginal": 90,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 1000",
+      "Nikon:ExposureBracketValue": 2,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16928,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 1,
+      "NikonCustom:AutoBracketOrder": 1,
+      "Composite:SubSecDateTimeOriginal": "2012:03:17 10:28:16.90"
+    },
+    {
+      "System:FileName": "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A2.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7000",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 0.07692307692,
+      "ExifIFD:FNumber": 20,
+      "ExifIFD:ISO": 1000,
+      "ExifIFD:DateTimeOriginal": "2012:03:17 10:28:16",
+      "ExifIFD:ExposureCompensation": -2,
+      "ExifIFD:SubSecTime": 20,
+      "ExifIFD:SubSecTimeOriginal": 20,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 1000",
+      "Nikon:ExposureBracketValue": -2,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16926,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 1,
+      "NikonCustom:AutoBracketOrder": 1,
+      "Composite:SubSecDateTimeOriginal": "2012:03:17 10:28:16.20"
+    },
+    {
+      "System:FileName": "Nuernberg_UBahn_Friedrich-Ebert-Platz_Belichtungsreihe_A3.jpg",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D7000",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 0.3333333333,
+      "ExifIFD:FNumber": 20,
+      "ExifIFD:ISO": 1000,
+      "ExifIFD:DateTimeOriginal": "2012:03:17 10:28:16",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTime": 40,
+      "ExifIFD:SubSecTimeOriginal": 40,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 1000",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16927,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 1,
+      "NikonCustom:AutoBracketOrder": 1,
+      "Composite:SubSecDateTimeOriginal": "2012:03:17 10:28:16.40"
+    }
+  ]
+}

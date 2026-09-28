@@ -1,0 +1,93 @@
+# Tags kept in fixtures (and read by the plugin): exiftool argument file.
+# Use with: exiftool -j -n -G1 -a -@ tests/fixtures/tags.args FILES
+# Anything not listed here (serial numbers, owner names, GPS, paths) is never stored.
+
+# Identity and ordering
+-FileName
+-Make
+-Model
+-Software
+-DateTimeOriginal
+-SubSecTimeOriginal
+-SubSecTime
+-SubSecDateTimeOriginal
+-ShutterCount
+-ImageCount
+
+# Exposure
+-ExposureMode
+-ExposureCompensation
+-ExposureTime
+-FNumber
+-ISO
+-HDR
+
+# Drive and sequence tags shared by several vendors
+-DriveMode
+-DriveMode2
+-ReleaseMode
+-ShootingMode
+-SequenceNumber
+-AutoBracketing
+-BracketShotNumber
+-WhiteBalanceBracketing
+
+# Sony
+-ReleaseMode2
+-ReleaseMode3
+-SequenceImageNumber
+-SequenceFileNumber
+-SequenceLength
+-BracketShotNumber2
+-ExposureBracketShotNumber
+-DynamicRangeOptimizerBracket
+
+# Canon
+-BracketMode
+-BracketValue
+-AEBBracketValue
+-AutoExposureBracketing
+-AEBShotCount
+-AEBSequence
+-ContinuousDrive
+-WBBracketMode
+-RawBurstImageCount
+-RawBurstImageNum
+-FocusBracketing
+-FocusBracketingImageCount
+-FocusBracketingFocusIncrement
+-FocusBracketingDepthComposite
+
+# Nikon
+-ExposureBracketValue
+-AutoBracketOrder
+-AutoBracketSet
+-AutoBracketModeM
+-BracketSet
+-BracketProgram
+-BracketIncrement
+-AEBracketingSteps
+-FocusShiftShooting
+-FocusShiftNumberShots
+-BurstGroupID
+-MultiExposureMode
+
+# Fujifilm
+-DriveSpeed
+-ExposureCount
+
+# Olympus / OM System
+-StackedImage
+-FocusBracketStepSize
+-WhiteBalanceBracket
+-PanoramaMode
+
+# Panasonic
+-BurstMode
+-BracketSettings
+-FocusBracket
+-TimerRecording
+-PostFocusMerging
+
+# Pentax
+-ExposureBracketStepSize

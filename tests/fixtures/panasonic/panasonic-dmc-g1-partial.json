@@ -1,0 +1,105 @@
+{
+  "id": "panasonic-dmc-g1-partial",
+  "kind": "exposure",
+  "complete": false,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/File:P1280263_-_Fehmarn.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Esby (Wikimedia Commons)"
+  },
+  "groups": [
+    [
+      "P1280217_-_Lüttow.JPG",
+      "P1280218_-_Lüttow.JPG"
+    ],
+    [
+      "P1280263_-_Fehmarn.JPG",
+      "P1280264_-_Fehmarn.JPG",
+      "P1280265_-_Fehmarn.JPG"
+    ]
+  ],
+  "notes": "Two incomplete 7-frame brackets: frames 3-4 of one and 4-6 of another. BracketSettings gives the length (7), SequenceNumber the position.",
+  "frames": [
+    {
+      "System:FileName": "P1280217_-_Lüttow.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-G1",
+      "IFD0:Software": "Ver.1.4",
+      "ExifIFD:ExposureTime": 0.0015625,
+      "ExifIFD:FNumber": 6.3,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2010:04:02 14:50:17",
+      "ExifIFD:ExposureCompensation": -1,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 2,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 3,
+      "Panasonic:BracketSettings": 6
+    },
+    {
+      "System:FileName": "P1280218_-_Lüttow.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-G1",
+      "IFD0:Software": "Ver.1.4",
+      "ExifIFD:ExposureTime": 0.002,
+      "ExifIFD:FNumber": 5.6,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2010:04:02 14:50:18",
+      "ExifIFD:ExposureCompensation": -0.33,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 2,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 4,
+      "Panasonic:BracketSettings": 6
+    },
+    {
+      "System:FileName": "P1280263_-_Fehmarn.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-G1",
+      "IFD0:Software": "Ver.1.4",
+      "ExifIFD:ExposureTime": 0.002,
+      "ExifIFD:FNumber": 6.3,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2010:04:02 14:56:07",
+      "ExifIFD:ExposureCompensation": -0.33,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 2,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 4,
+      "Panasonic:BracketSettings": 6
+    },
+    {
+      "System:FileName": "P1280264_-_Fehmarn.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-G1",
+      "IFD0:Software": "Ver.1.4",
+      "ExifIFD:ExposureTime": 0.0025,
+      "ExifIFD:FNumber": 5.6,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2010:04:02 14:56:08",
+      "ExifIFD:ExposureCompensation": 0.33,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 2,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 5,
+      "Panasonic:BracketSettings": 6
+    },
+    {
+      "System:FileName": "P1280265_-_Fehmarn.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-G1",
+      "IFD0:Software": "Ver.1.4",
+      "ExifIFD:ExposureTime": 0.004,
+      "ExifIFD:FNumber": 5.5,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2010:04:02 14:56:08",
+      "ExifIFD:ExposureCompensation": 1,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 2,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 6,
+      "Panasonic:BracketSettings": 6
+    }
+  ]
+}

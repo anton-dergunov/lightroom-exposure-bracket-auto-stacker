@@ -1,0 +1,45 @@
+{
+  "id": "nikon-z8-rawpixls-single",
+  "kind": "none",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://raw.pixls.us/",
+    "license": "CC0 1.0",
+    "author": "raw.pixls.us contributors"
+  },
+  "groups": [],
+  "notes": "Negative: Z 8 single frame with BracketProgram Disabled and FocusShiftShooting Off.",
+  "frames": [
+    {
+      "System:FileName": "Nikon - Z 8 - 8bit 8bit compressed (3:2).NEF",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON Z 8",
+      "IFD0:Software": "Ver.01.00",
+      "IFD0:DateTimeOriginal": "2023:06:02 18:53:25",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:ISO": 62.9960524947437,
+      "Nikon:BurstGroupID": 0,
+      "Nikon:ShootingMode": 2,
+      "Nikon:FocusShiftShooting": 0,
+      "Nikon:BracketSet": 0,
+      "Nikon:BracketProgram": 0,
+      "Nikon:BracketIncrement": 3,
+      "Nikon:HDR": 0,
+      "Nikon:FNumber": 5.65685424949238,
+      "Nikon:ShutterCount": 2567,
+      "Nikon:MultiExposureMode": 0,
+      "ExifIFD:ExposureTime": 0.0125,
+      "ExifIFD:FNumber": 8,
+      "ExifIFD:ISO": 64,
+      "ExifIFD:DateTimeOriginal": "2023:06:02 18:53:25",
+      "ExifIFD:ExposureCompensation": 0.3333333333,
+      "ExifIFD:SubSecTime": 67,
+      "ExifIFD:SubSecTimeOriginal": 67,
+      "ExifIFD:ExposureMode": 0,
+      "NikonCustom:AutoBracketModeM": 0,
+      "NikonCustom:AutoBracketOrder": 0,
+      "Composite:SubSecDateTimeOriginal": "2023:06:02 18:53:25.67+02:00"
+    }
+  ]
+}

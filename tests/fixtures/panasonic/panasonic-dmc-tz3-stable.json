@@ -1,0 +1,69 @@
+{
+  "id": "panasonic-dmc-tz3-stable",
+  "kind": "exposure",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/File:Stable_P1000984.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Nevit Dilmen"
+  },
+  "groups": [
+    [
+      "Stable_P1000984.JPG",
+      "Stable_P1000985.JPG",
+      "Stable_P1000986.JPG"
+    ]
+  ],
+  "notes": "3 frames 0/-1/+1 EV. BurstMode 2 = AEB, SequenceNumber 1..3. This 2007 body does not write BracketSettings, and has SubSecTime but no SubSecTimeOriginal.",
+  "frames": [
+    {
+      "System:FileName": "Stable_P1000984.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-TZ3",
+      "IFD0:Software": "ACD Systems Digital Imaging",
+      "ExifIFD:ExposureTime": 0.0125,
+      "ExifIFD:FNumber": 3.3,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2008:03:13 16:20:29",
+      "ExifIFD:ExposureCompensation": 0,
+      "ExifIFD:SubSecTime": 922,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 1,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 1
+    },
+    {
+      "System:FileName": "Stable_P1000985.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-TZ3",
+      "IFD0:Software": "ACD Systems Digital Imaging",
+      "ExifIFD:ExposureTime": 0.00625,
+      "ExifIFD:FNumber": 3.3,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2008:03:13 16:20:29",
+      "ExifIFD:ExposureCompensation": -1,
+      "ExifIFD:SubSecTime": 503,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 1,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 2
+    },
+    {
+      "System:FileName": "Stable_P1000986.JPG",
+      "IFD0:Make": "Panasonic",
+      "IFD0:Model": "DMC-TZ3",
+      "IFD0:Software": "ACD Systems Digital Imaging",
+      "ExifIFD:ExposureTime": 0.025,
+      "ExifIFD:FNumber": 3.3,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2008:03:13 16:20:30",
+      "ExifIFD:ExposureCompensation": 1,
+      "ExifIFD:SubSecTime": 250,
+      "ExifIFD:ExposureMode": 2,
+      "Panasonic:ShootingMode": 1,
+      "Panasonic:BurstMode": 2,
+      "Panasonic:SequenceNumber": 3
+    }
+  ]
+}

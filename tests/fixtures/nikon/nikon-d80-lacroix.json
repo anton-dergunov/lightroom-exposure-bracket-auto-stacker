@@ -1,0 +1,92 @@
+{
+  "id": "nikon-d80-lacroix",
+  "kind": "exposure",
+  "complete": true,
+  "exiftool": "12.97",
+  "source": {
+    "url": "https://commons.wikimedia.org/wiki/File:Lacroix-1972-Farbleiter-4632.JPG",
+    "license": "CC BY-SA 3.0",
+    "author": "Welt-der-Form (Wikimedia Commons)",
+    "files": {
+      "Lacroix-1972-Farbleiter-4632.JPG": "https://commons.wikimedia.org/wiki/File:Lacroix-1972-Farbleiter-4632.JPG",
+      "Lacroix-1972-Farbleiter-4633.JPG": "https://commons.wikimedia.org/wiki/File:Lacroix-1972-Farbleiter-4633.JPG",
+      "Lacroix-1972-Farbleiter-4634.JPG": "https://commons.wikimedia.org/wiki/File:Lacroix-1972-Farbleiter-4634.JPG"
+    }
+  },
+  "groups": [
+    [
+      "Lacroix-1972-Farbleiter-4632.JPG",
+      "Lacroix-1972-Farbleiter-4633.JPG",
+      "Lacroix-1972-Farbleiter-4634.JPG"
+    ]
+  ],
+  "notes": "In-camera JPEGs, 3 frames 0/-2/+2 EV around a -2/3 EV base compensation. ShootingMode 17 = continuous + exposure bracketing.",
+  "frames": [
+    {
+      "System:FileName": "Lacroix-1972-Farbleiter-4632.JPG",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D80",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 0.05,
+      "ExifIFD:FNumber": 4.5,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2013:01:05 16:01:42",
+      "ExifIFD:ExposureCompensation": -0.6666666667,
+      "ExifIFD:SubSecTime": "00",
+      "ExifIFD:SubSecTimeOriginal": "00",
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": 0,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16451,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 0,
+      "NikonCustom:AutoBracketOrder": 0,
+      "Composite:SubSecDateTimeOriginal": "2013:01:05 16:01:42.00"
+    },
+    {
+      "System:FileName": "Lacroix-1972-Farbleiter-4633.JPG",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D80",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 0.0125,
+      "ExifIFD:FNumber": 4.5,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2013:01:05 16:01:42",
+      "ExifIFD:ExposureCompensation": -2.666666667,
+      "ExifIFD:SubSecTime": 40,
+      "ExifIFD:SubSecTimeOriginal": 40,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": -2,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16452,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 0,
+      "NikonCustom:AutoBracketOrder": 0,
+      "Composite:SubSecDateTimeOriginal": "2013:01:05 16:01:42.40"
+    },
+    {
+      "System:FileName": "Lacroix-1972-Farbleiter-4634.JPG",
+      "IFD0:Make": "NIKON CORPORATION",
+      "IFD0:Model": "NIKON D80",
+      "IFD0:Software": "Ver.1.01",
+      "ExifIFD:ExposureTime": 0.1666666667,
+      "ExifIFD:FNumber": 4.5,
+      "ExifIFD:ISO": 100,
+      "ExifIFD:DateTimeOriginal": "2013:01:05 16:01:42",
+      "ExifIFD:ExposureCompensation": 1.333333333,
+      "ExifIFD:SubSecTime": 90,
+      "ExifIFD:SubSecTimeOriginal": 90,
+      "ExifIFD:ExposureMode": 0,
+      "Nikon:ISO": "0 100",
+      "Nikon:ExposureBracketValue": 2,
+      "Nikon:ShootingMode": 17,
+      "Nikon:ShutterCount": 16453,
+      "Nikon:MultiExposureMode": 0,
+      "NikonCustom:AutoBracketSet": 0,
+      "NikonCustom:AutoBracketOrder": 0,
+      "Composite:SubSecDateTimeOriginal": "2013:01:05 16:01:42.90"
+    }
+  ]
+}
