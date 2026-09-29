@@ -30,6 +30,9 @@ logic is tested against.
 - `derived`: present when the originals' license does not allow redistribution (non-commercial or all rights
   reserved). File names, dates and shutter counts are replaced; times of day, intervals and every bracket tag are
   kept as the camera wrote them. The field says exactly what was changed.
+- `frames[].SourceFile`: optional, only for fixtures spanning several folders: the photo's path relative to the
+  folder the photos came from, such as `101MSDCF/DSC00001.ARW`. Cameras restart file numbers in a new folder, so
+  file names alone can repeat. `groups` then list these paths instead of file names. Absolute paths are rejected.
 - `frames`: exiftool output (`-j -n -G1:4 -a`), keeping only the tags in the plugin's [tags.args](../../auto-stacker.lrdevplugin/tags.args). Keys are
   `Group:Tag`, because the same tag often appears in several groups (for example `ExifIFD:ExposureCompensation` and
   `Canon:ExposureCompensation`). A tag repeated within one group gets a copy number, such as
@@ -40,7 +43,8 @@ logic is tested against.
 1. Shoot or find a complete sequence. Only use photos you took yourself, or ones published under an open license
    (CC0, CC BY, CC BY-SA or public domain). Straight-from-camera files are needed: exports from Lightroom or
    Photoshop usually lose the maker notes.
-2. Run `tests/fixtures/make-fixture.sh <id> <photos...> > tests/fixtures/<brand>/<id>.json`.
+2. Run `tests/fixtures/make-fixture.sh <id> <photos...> > tests/fixtures/<brand>/<id>.json`. For photos in
+   several folders, add `-r <folder they are in>` to keep their relative paths.
 3. Fill in `kind`, `source`, `groups` and `notes`.
 
 The tag list in `tags.args` is what keeps serial numbers, owner names, GPS and file paths out: nothing else is

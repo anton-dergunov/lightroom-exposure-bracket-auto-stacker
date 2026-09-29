@@ -24,9 +24,14 @@ local function readFile(path)
     return text
 end
 
+-- A frame's name in "groups": its relative path when the fixture spans folders, else its file name.
+local function frameName(frame)
+    return frame.SourceFile or frame["System:FileName"]
+end
+
 local function names(frames)
     local list = {}
-    for i, frame in ipairs(frames) do list[i] = frame["System:FileName"] end
+    for i, frame in ipairs(frames) do list[i] = frameName(frame) end
     return list
 end
 
@@ -62,12 +67,17 @@ local function checkFormat(path, fixture)
 
     local present = {}
     for _, frame in ipairs(fixture.frames) do
-        local name = frame["System:FileName"]
-        check(name and not present[name], "missing or duplicate file name: " .. tostring(name))
+        local name = frameName(frame)
+        check(frame["System:FileName"] and not present[name], "missing or duplicate file name: " .. tostring(name))
         present[name] = true
+        -- Paths are kept only relative to the photos' own folder, so they cannot reveal anything about the owner.
+        check(not frame.SourceFile or not (frame.SourceFile:match("^[/\\]") or frame.SourceFile:match("^%a:")),
+            name .. ": SourceFile must be a relative path")
         for key in pairs(frame) do
-            local group, tag = key:match("^([^:]+):.-([^:]+)$")
-            check(group and allowedTags[tag], name .. ": " .. key .. " is not in tags.args")
+            if key ~= "SourceFile" then
+                local group, tag = key:match("^([^:]+):.-([^:]+)$")
+                check(group and allowedTags[tag], name .. ": " .. key .. " is not in tags.args")
+            end
         end
     end
     for name in pairs(source.files or {}) do

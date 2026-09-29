@@ -36,8 +36,8 @@ everything else.
 ## Focus brackets (should be grouped, for focus stacking outside Lightroom)
 
 - [x] **Focus Bracket, 5 shots** and **10 shots** (also 4, 9, and 299 stopped at 258), Focus Bracket Order [0→+]. Autofocus lens, tripod.
-- [ ] **Focus Bracket Order [0→-→+]**: always 3 shots.
-- [ ] **Focus Brckt Saving Dest [New Folder]**: one short focus bracket saved to its own folder.
+- [x] **Focus Bracket Order [0→-→+]**: always 3 shots.
+- [x] **Focus Brckt Saving Dest [New Folder]**: one short focus bracket saved to its own folder.
 
 exiftool may not decode Sony's focus-bracket tags yet, so these frames show what the camera actually writes.
 
@@ -70,7 +70,12 @@ exiftool may not decode Sony's focus-bracket tags yet, so these frames show what
 compensation, and 9 frames at 0.3 EV; continuous burst, Single Burst Shooting (7 frames with a sequence length of 7,
 ReleaseMode3 9, not a bracket), self-timer, WB and DRO brackets. The same tags as the A7C II; nothing new needed.
 
-Still open: A7C II Focus Bracket Order [0→-→+] and Focus Brckt Saving Dest [New Folder]; ZV-E10.
+A7C II follow-up (`sony-a7c-ii-focus-order-and-folders`): Focus Bracket Order [0→-→+] writes the same tags as
+[0→+]. With Saving Dest [New Folder] each bracket gets its own folder (101MSDCF, 102MSDCF) and file numbers restart
+at DSC00001, so folders hold files with the same names; fixtures can now keep paths relative to the card's DCIM
+folder for this.
+
+Still open: ZV-E10.
 
 ## Afterwards
 
