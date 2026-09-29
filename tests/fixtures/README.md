@@ -22,7 +22,10 @@ logic is tested against.
 - `kind`: `exposure` or `focus` for a camera-made sequence, `none` for negatives (frames that must not be grouped).
 - `complete`: `false` when some frames of a sequence were never published.
 - `groups`: the true grouping, labelled by hand. Each group lists two or more file names in shot order. Frames that
-  belong to no group are left out. A true group can be one the plugin is not expected to find (see `notes`).
+  belong to no group are left out.
+- `expected`: optional. What the plugin should find when that differs from `groups`, for example when an editor
+  stripped the maker notes (`nikon-d5200-no-makernotes`). The Lua tests compare against `expected` if present,
+  otherwise `groups`.
 - `source.files`: optional per-file links when the source has one page per photo.
 - `derived`: present when the originals' license does not allow redistribution (non-commercial or all rights
   reserved). File names, dates and shutter counts are replaced; times of day, intervals and every bracket tag are
@@ -41,6 +44,20 @@ logic is tested against.
 
 The tag list in `tags.args` is what keeps serial numbers, owner names, GPS and file paths out: nothing else is
 stored. If your camera records its bracket in a tag that is not listed, add it to `tags.args` first.
+
+## Running the tests
+
+```sh
+lua tests/lua/run.lua tests/fixtures/*/*.json tests/lua/test_*.lua
+```
+
+The grouping code must stay compatible with Lua 5.1, the version Lightroom runs; CI tests it on 5.1.
+
+## Photos for testing in Lightroom
+
+A few of the owner's own sequences, as the original RAW and JPEG files, are published as the `test-photos-v1`
+release rather than committed. `tests/photos/fetch.sh` downloads and unpacks them into `tests/photos/`. They match
+the `sony-a7c-ii-greenwich` and `sony-zv-1-chiltern` fixtures frame for frame.
 
 ## Coverage
 

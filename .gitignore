@@ -1,2 +1,4 @@
 *.pyc
 .DS_Store
+tests/photos/*
+!tests/photos/fetch.sh

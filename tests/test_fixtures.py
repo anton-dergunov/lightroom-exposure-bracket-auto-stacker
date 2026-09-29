@@ -36,6 +36,8 @@ def test_fixture_is_well_formed(path):
     assert set(fixture["source"].get("files", {})) <= set(names)
     if fixture["kind"] == "none":
         assert not fixture["groups"]
+    for group in fixture.get("expected", []):
+        assert len(group) >= 2 and set(group) <= set(names), "expected lists a frame that is not in frames"
 
 
 @pytest.mark.parametrize("path", FIXTURE_FILES, ids=lambda p: p.stem)

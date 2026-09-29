@@ -20,6 +20,7 @@
       "Dome_of_Basilica_of_Santa_Maria_del_Popolo_+2EV.jpg"
     ]
   ],
+  "expected": [],
   "notes": "A real 0/-2/+2 bracket, but exported through Photoshop, which stripped the maker notes. Only EXIF time and ExposureCompensation remain, so grouping by maker notes is expected to miss it.",
   "frames": [
     {

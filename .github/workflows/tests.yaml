@@ -17,3 +17,14 @@ jobs:
         run: pytest -v
         env:
           PYTHONPATH: .
+
+  lua:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Lua 5.1 (the version Lightroom runs)
+        uses: leafo/gh-actions-lua@v10
+        with:
+          luaVersion: '5.1.5'
+      - name: Run grouping tests
+        run: lua tests/lua/run.lua tests/fixtures/*/*.json tests/lua/test_*.lua
