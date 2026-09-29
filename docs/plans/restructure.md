@@ -93,9 +93,17 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    Ctrl+H opens HDR merge and Ctrl+Shift+H merges without the dialog (Control on macOS); "Create Stack" in the HDR
    dialog stacks each result with its sources.
 7. **Rename** the project, based on what focus-bracket support turns out to cover.
+
+   *Decided (2026-09-29).* Focus brackets are stacked like exposure brackets and marked: every stack gets the
+   keyword *Exposure bracket* or *Focus bracket* (under *Bracket Stacker*) so focus stacks can be filtered out
+   before a batch HDR merge, and the import confirmation offers to leave focus brackets out (or unstacked when
+   importing a whole folder). Lightroom cannot focus-stack; the README explains doing it in Photoshop. The cleanup
+   stays HDR-only. The new name follows from that: **Bracket Stacker** (repository `lightroom-bracket-stacker`),
+   covering both kinds of bracket and dropping "Auto", which echoed Lightroom's own Auto-Stack. Still to do: rename
+   the plugin, its folder and the repository, and update the README and article links.
 8. **Benchmark** time-based, visual-similarity and metadata grouping on labelled photos.
-9. **Release 1.0.0.** After steps 7 and 8, and after: checking the plugin on Windows; the Sony test shoot
-   ([sony-test-shoot.md](sony-test-shoot.md)) turned into fixtures. (Lightroom sometimes misses a plugin's new files
+9. **Release 1.0.0.** After steps 7 and 8, and after checking the plugin on Windows. The Sony test shoot is done:
+   A7C II, ZV-E10 and RX100 VII are fixtures, and what each mode writes is in camera-support.md. (Lightroom sometimes misses a plugin's new files
    until it restarts, "No script by the name ...": the README tells users to restart after updating.) Then set the version in `Info.lua`, build
    the zip with `tools/package.sh` and publish it as a GitHub release, which the README's install steps link to.
 
@@ -103,4 +111,3 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
 
 - Metadata fixtures: [tests/fixtures/](../../tests/fixtures/).
 - Photos for testing in Lightroom: the `test-photos-v1` release asset, downloaded with `tests/photos/fetch.sh`.
-- Shoot list for missing Sony cases: [sony-test-shoot.md](sony-test-shoot.md).

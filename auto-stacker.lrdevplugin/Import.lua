@@ -52,7 +52,21 @@ local function withCatalog(catalog, result, paths, work)
     end
 end
 
+-- The keywords for each kind of stack, created on first use; hidden from exports.
+local function stackKeywords(catalog)
+    local keywords
+    catalog:withWriteAccessDo("Create bracket keywords", function()
+        local parent = catalog:createKeyword(Summary.KEYWORDS.parent, {}, false, nil, true)
+        keywords = {
+            exposure = catalog:createKeyword(Summary.KEYWORDS.exposure, {}, false, parent, true),
+            focus = catalog:createKeyword(Summary.KEYWORDS.focus, {}, false, parent, true),
+        }
+    end, { timeout = 60 })
+    return keywords or {}
+end
+
 local function importPlan(catalog, plan, progress, result)
+    local keywords = #plan.stacks > 0 and stackKeywords(catalog) or {}
     local total, done = plan.photoCount, 0
     local function advance(count)
         done = done + count
@@ -67,11 +81,14 @@ local function importPlan(catalog, plan, progress, result)
                 result.failures[#result.failures + 1] = stack.paths[1] .. ": " .. message
                 return
             end
+            local keyword = keywords[stack.group.kind]
+            if keyword then leader:addKeyword(keyword) end
             result.stacks = result.stacks + 1
             result.photos = result.photos + 1
             for i = 2, #stack.paths do
                 local photo, failure = addPhoto(catalog, stack.paths[i], leader)
                 if photo then
+                    if keyword then photo:addKeyword(keyword) end
                     result.photos = result.photos + 1
                 else
                     result.failures[#result.failures + 1] = stack.paths[i] .. ": " .. failure
@@ -131,10 +148,14 @@ function Import.run(onlyBrackets)
 
         local catalog = LrApplication.activeCatalog()
         local groups, warnings = Grouping.group(frames)
-        local plan = ImportPlan.build(frames, groups, {
-            onlyBrackets = onlyBrackets,
-            inCatalog = function(path) return catalog:findPhotoByPath(path) ~= nil end,
-        })
+        local function planFor(kinds)
+            return ImportPlan.build(frames, groups, {
+                onlyBrackets = onlyBrackets,
+                kinds = kinds,
+                inCatalog = function(path) return catalog:findPhotoByPath(path) ~= nil end,
+            })
+        end
+        local plan = planFor(nil)
         local found, detection = Summary.describe(#frames, groups, warnings)
 
         if plan.photoCount == 0 then
@@ -143,8 +164,22 @@ function Import.run(onlyBrackets)
             return
         end
 
+        -- Focus brackets must stay out of a batch HDR merge, so offer to leave them unstacked.
         local question, details = Summary.confirmation(plan, detection, folder)
-        if LrDialogs.confirm(question, details, "Import", "Cancel") ~= "ok" then return end
+        local withoutFocus = nil
+        if (plan.kinds.focus or 0) > 0 then
+            withoutFocus = onlyBrackets and "Leave Out Focus Brackets" or "Don't Stack Focus Brackets"
+        end
+        local choice = LrDialogs.confirm(question, details, "Import", "Cancel", withoutFocus)
+        if choice == "other" then
+            plan = planFor({ exposure = true })
+            if plan.photoCount == 0 then
+                LrDialogs.message("Nothing to import", "The folder has only focus brackets.", "info")
+                return
+            end
+        elseif choice ~= "ok" then
+            return
+        end
 
         local progress = LrProgressScope({ title = "Importing photos", functionContext = context })
         progress:setCancelable(true)

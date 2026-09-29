@@ -65,8 +65,13 @@ function tests.import_only_bracketed_photos()
         "RAW/DSC03154.ARW: DSC03155.ARW DSC03156.ARW",
         "RAW/DSC03157.ARW: DSC03158.ARW DSC03159.ARW",
     }, "\n"), "stacks")
+    for _, photo in ipairs(fake.catalog.photos) do
+        eq(photo.keywords and table.concat(photo.keywords, ","), "Exposure bracket", photo.path .. " keywords")
+    end
+    eq(fake.otherVerb, nil, "no focus brackets, so no third button")
     local report = fake.messages[#fake.messages]
     eq(report.title, "Imported 16 photos as 6 stacks.", "report")
+    assert(report.text:find('keyword "Exposure bracket" or "Focus bracket"', 1, true), report.text)
     assert(report.text:find("The photos are in these folders under Library > Folders: JPEG, RAW. The Library is now showing them.", 1, true), report.text)
     eq(table.concat(fake.sources, " "), photos .. "/sony-zv-1-chiltern/JPEG " .. photos .. "/sony-zv-1-chiltern/RAW", "folders shown")
 end
@@ -114,6 +119,57 @@ function tests.reject_extra_exposures_after_merging()
     table.sort(rejected)
     eq(table.concat(rejected, " "), "DSC03155.ARW DSC03156.ARW DSC03158.ARW DSC03159.ARW", "rejected photos")
     eq(fake.messages[#fake.messages].title, "Rejected 4 photos in 2 stacks.", "report")
+end
+
+-- Runs an import on frames from fixtures instead of reading a folder with exiftool.
+local function importFixtures(onlyBrackets, choice, ...)
+    local json = require 'Json'
+    local ExifTool = require 'ExifTool'
+    local frames = {}
+    for _, id in ipairs({ ... }) do
+        local file = assert(io.open(TEST_ROOT .. "/tests/fixtures/sony/" .. id .. ".json", "rb"))
+        for _, frame in ipairs(json.decode(file:read("*a")).frames) do
+            frame.SourceFile = "/card/" .. frame["System:FileName"]
+            frames[#frames + 1] = frame
+        end
+        file:close()
+    end
+    local readFolder = ExifTool.readFolder
+    ExifTool.readFolder = function() return frames end
+    fake.reset("/card")
+    fake.confirm = choice
+    local ok, err = pcall(Import.run, onlyBrackets)
+    ExifTool.readFolder = readFolder
+    assert(ok, err)
+end
+
+local function keywordCounts()
+    local counts = {}
+    for _, photo in ipairs(fake.catalog.photos) do
+        local keyword = photo.keywords and table.concat(photo.keywords, ",") or "none"
+        counts[keyword] = (counts[keyword] or 0) + 1
+    end
+    return string.format("exposure=%d focus=%d none=%d",
+        counts["Exposure bracket"] or 0, counts["Focus bracket"] or 0, counts.none or 0)
+end
+
+function tests.focus_brackets_are_tagged_and_can_be_left_out()
+    -- 14 focus frames (5 + 9) and, in other-modes, one 2-frame exposure bracket among 27 other photos.
+    importFixtures(true, "ok", "sony-a7c-ii-focus-brackets", "sony-a7c-ii-other-modes")
+    eq(fake.otherVerb, "Leave Out Focus Brackets", "third button")
+    eq(keywordCounts(), "exposure=2 focus=14 none=0", "keywords")
+    local report = fake.messages[#fake.messages].text
+    assert(report:find('filter by the keyword "Exposure bracket"', 1, true), report)
+    assert(report:find("Open as Layers in Photoshop", 1, true), report)
+
+    importFixtures(true, "other", "sony-a7c-ii-focus-brackets", "sony-a7c-ii-other-modes")
+    eq(keywordCounts(), "exposure=2 focus=0 none=0", "focus brackets left out")
+    assert(fake.messages[#fake.messages].text:find("2 focus brackets left out, as chosen.", 1, true))
+
+    importFixtures(false, "other", "sony-a7c-ii-focus-brackets", "sony-a7c-ii-other-modes")
+    eq(fake.otherVerb, "Don't Stack Focus Brackets", "third button when importing everything")
+    eq(keywordCounts(), "exposure=2 focus=0 none=41", "focus frames imported as single photos")
+    eq(#stacks(), 1, "stacks")
 end
 
 function tests.cancel_at_confirmation_imports_nothing()

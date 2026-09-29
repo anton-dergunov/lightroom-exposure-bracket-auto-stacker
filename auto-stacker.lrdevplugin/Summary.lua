@@ -8,6 +8,9 @@ Summary.HELP_URL = "https://github.com/anton-dergunov/lightroom-exposure-bracket
 
 local MAX_WARNINGS = 10
 
+-- Keywords the import adds to every photo of a stack, so each kind can be filtered in the Library.
+Summary.KEYWORDS = { parent = "Bracket Stacker", exposure = "Exposure bracket", focus = "Focus bracket" }
+
 local function plural(count, word)
     return count .. " " .. word .. (count == 1 and "" or "s")
 end
@@ -91,6 +94,10 @@ local function skippedLines(plan)
     if plan.skippedPhotos > 0 then
         lines[#lines + 1] = plural(plan.skippedPhotos, "single photo") .. " already in the catalog left out."
     end
+    if (plan.leftOut or 0) > 0 then
+        lines[#lines + 1] = plural(plan.leftOut, "focus bracket")
+            .. (plan.onlyBrackets and " left out, as chosen." or " imported as single photos, as chosen.")
+    end
     return lines
 end
 
@@ -167,10 +174,19 @@ function Summary.importResult(plan, result, root)
             result.shown and " The Library is now showing them." or "")
         lines[#lines + 1] = "Lightroom's Previous Import collection does not list photos added by a plug-in."
     end
+    local focus = (plan.kinds and plan.kinds.focus or 0) > 0
     if result.stacks > 0 then
         if #lines > 0 then lines[#lines + 1] = "" end
+        lines[#lines + 1] = string.format("Each stack has the keyword \"%s\" or \"%s\" (under \"%s\").",
+            Summary.KEYWORDS.exposure, Summary.KEYWORDS.focus, Summary.KEYWORDS.parent)
         lines[#lines + 1] = "To merge the stacks into HDR images: in the Library, choose Photo > Stacking > Collapse All "
-            .. "Stacks, select the stacks, then choose Photo > Photo Merge > HDR. Lightroom merges each stack in turn."
+            .. "Stacks, " .. (focus and ("filter by the keyword \"" .. Summary.KEYWORDS.exposure .. "\" so that focus "
+            .. "stacks are left out, ") or "")
+            .. "select the stacks, then choose Photo > Photo Merge > HDR. Lightroom merges each stack in turn."
+    end
+    if focus then
+        lines[#lines + 1] = "Lightroom cannot combine focus brackets. To do it in Photoshop, select the photos of one "
+            .. "focus stack and choose Photo > Edit In > Open as Layers in Photoshop, then Edit > Auto-Blend Layers."
     end
     return headline, table.concat(lines, "\n")
 end

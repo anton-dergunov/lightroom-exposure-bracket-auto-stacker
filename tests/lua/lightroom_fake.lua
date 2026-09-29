@@ -49,6 +49,19 @@ end
 
 function Photo:setRawMetadata(key, value) self[key] = value end
 
+function Photo:addKeyword(keyword)
+    self.keywords = self.keywords or {}
+    table.insert(self.keywords, keyword.name)
+end
+
+-- Keywords are { name, parent }; the same name and parent returns the same keyword, as with returnExisting.
+function catalog:createKeyword(name, _, _, parent, returnExisting)
+    state.keywords = state.keywords or {}
+    local key = (parent and parent.name or "") .. "/" .. name
+    if not (returnExisting and state.keywords[key]) then state.keywords[key] = { name = name, parent = parent } end
+    return state.keywords[key]
+end
+
 function catalog:getTargetPhotos()
     return state.targets or state.catalog.photos
 end
@@ -87,7 +100,10 @@ local modules = {
     LrApplication = { activeCatalog = function() return catalog end },
     LrDialogs = {
         runOpenPanel = function() return state.folder and { state.folder } end,
-        confirm = function() return state.confirm end,
+        confirm = function(_, _, _, _, otherVerb)
+            state.otherVerb = otherVerb
+            return state.confirm
+        end,
         message = function(title, text, style)
             table.insert(state.messages, { title = title, text = text, style = style })
         end,

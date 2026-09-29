@@ -86,8 +86,14 @@ All commands are under **Library > Plug-in Extras**.
    can only stack photos while importing them. Afterwards the Library shows the folders the photos went to. Photos
    imported this way do not appear in Lightroom's *Previous Import* collection.
 
+   Every stack gets the keyword *Exposure bracket* or *Focus bracket* (under *Bracket Stacker*), so either kind can
+   be found with the Library filter. When a folder contains focus brackets, the confirmation also offers to leave
+   them out (or, when importing the entire folder, to import them without stacking).
+
 2. **Merge all stacks into HDR images.**
    - Choose **Photo > Stacking > Collapse All Stacks**.
+   - If focus brackets were imported too, first filter the Library by the keyword *Exposure bracket*, so that focus
+     stacks are not merged as HDR.
    - Select the stacks and choose **Photo > Photo Merge > HDR...** (Ctrl+H; Control+H on macOS). Lightroom merges
      each stack in turn, using the settings you chose last (such as Deghost Amount). Ctrl+Shift+H (Control+Shift+H on
      macOS) merges without showing the dialog.
@@ -95,11 +101,16 @@ All commands are under **Library > Plug-in Extras**.
    - Merging many stacks takes a while, but afterwards every HDR image is ready to compare with its source photos
      while culling.
 
-3. **Find the HDR images.** They are saved next to the source photos and named after one of them, ending in
+3. **Combine focus brackets (optional).** Lightroom cannot focus-stack. Select the photos of one focus stack and
+   choose **Photo > Edit In > Open as Layers in Photoshop**, then in Photoshop **Edit > Auto-Align Layers** and
+   **Edit > Auto-Blend Layers** (Stack Images). Dedicated tools such as Helicon Focus also work from a Lightroom
+   selection.
+
+4. **Find the HDR images.** They are saved next to the source photos and named after one of them, ending in
    `-HDR.dng`. To list only them, filter the Library by file type DNG. If you edit in the cloud-based Lightroom,
    export them or copy the files.
 
-4. **(Optional) Remove the extra exposures.** Select the merged stacks (or show their folder with nothing selected)
+5. **(Optional) Remove the extra exposures.** Select the merged stacks (or show their folder with nothing selected)
    and choose **Reject Extra Exposures After HDR Merge...**. It flags the over- and under-exposed photos of each
    merged stack as rejected and keeps the base exposure, or flags all source photos if you choose so. Stacks without
    an HDR image are left alone. Then choose **Photo > Delete Rejected Photos**: *Remove* takes them out of the
