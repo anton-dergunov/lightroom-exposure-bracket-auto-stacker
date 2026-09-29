@@ -41,10 +41,11 @@ local function addPhoto(catalog, path, leader)
     return nil, tostring(photo or "unknown error")
 end
 
--- Runs `work` in one catalog transaction; records the photos as failed if Lightroom gives up waiting for the catalog.
+-- Runs `work` in one catalog transaction; records the photos as failed if Lightroom gives up waiting for the catalog
+-- ("aborted"). "queued" means the work runs a little later, which is fine.
 local function withCatalog(catalog, result, paths, work)
     local status = catalog:withWriteAccessDo("Import and stack brackets", work, { timeout = 60 })
-    if status ~= nil and status ~= "executed" then
+    if status == "aborted" then
         for _, path in ipairs(paths) do
             result.failures[#result.failures + 1] = path .. ": the catalog was busy (" .. tostring(status) .. ")"
         end
@@ -100,6 +101,19 @@ local function importPlan(catalog, plan, progress, result)
     end
 end
 
+-- Switches the Library to the folders the photos went to, as selecting them in the Folders panel would.
+-- Returns true if Lightroom accepted them.
+local function showFolders(catalog, plan)
+    local folders = {}
+    for _, folder in ipairs(plan.folders) do
+        local found = catalog:getFolderByPath(folder.path)
+        if found then folders[#folders + 1] = found end
+    end
+    if #folders == 0 then return false end
+    local ok, shown = LrTasks.pcall(function() return catalog:setActiveSources(folders) end)
+    return ok and shown ~= false
+end
+
 function Import.run(onlyBrackets)
     LrFunctionContext.postAsyncTaskWithContext("Import and stack brackets", function(context)
         LrDialogs.attachErrorDialogToFunctionContext(context)
@@ -124,12 +138,12 @@ function Import.run(onlyBrackets)
         local found, detection = Summary.describe(#frames, groups, warnings)
 
         if plan.photoCount == 0 then
-            local _, details = Summary.confirmation(plan, detection)
+            local _, details = Summary.confirmation(plan, detection, folder)
             LrDialogs.message("Nothing to import. " .. found, details, "info")
             return
         end
 
-        local question, details = Summary.confirmation(plan, detection)
+        local question, details = Summary.confirmation(plan, detection, folder)
         if LrDialogs.confirm(question, details, "Import", "Cancel") ~= "ok" then return end
 
         local progress = LrProgressScope({ title = "Importing photos", functionContext = context })
@@ -137,8 +151,9 @@ function Import.run(onlyBrackets)
         local result = { stacks = 0, singles = 0, photos = 0, failures = {}, canceled = false }
         importPlan(catalog, plan, progress, result)
         progress:done()
+        if result.photos > 0 then result.shown = showFolders(catalog, plan) end
 
-        local headline, report = Summary.importResult(plan, result)
+        local headline, report = Summary.importResult(plan, result, folder)
         LrDialogs.message(headline, report, #result.failures > 0 and "warning" or "info")
     end)
 end

@@ -5,6 +5,7 @@ Installs a global `import`, `_PLUGIN` and `WIN_ENV`, and returns `state`, which 
   state.confirm     what LrDialogs.confirm returns ("ok" or "cancel")
   state.messages    dialogs shown: { title, text, style }
   state.catalog     photos added: { path, leader, position }; byPath indexes them
+  state.sources     folder paths last passed to catalog:setActiveSources
 ]]
 
 local state = {}
@@ -14,6 +15,7 @@ function state.reset(folder)
     state.confirm = "ok"
     state.messages = {}
     state.catalog = { photos = {}, byPath = {} }
+    state.sources = nil
 end
 
 local catalog = {}
@@ -28,6 +30,22 @@ function catalog:addPhoto(path, leader, position)
     table.insert(state.catalog.photos, photo)
     state.catalog.byPath[path] = photo
     return photo
+end
+
+-- A folder exists once a photo in it has been added, as in Lightroom.
+function catalog:getFolderByPath(path)
+    for _, photo in ipairs(state.catalog.photos) do
+        if photo.path:sub(1, #path + 1) == path .. "/" and not photo.path:sub(#path + 2):find("/") then
+            return { path = path }
+        end
+    end
+end
+
+function catalog:setActiveSources(sources)
+    state.sources = {}
+    for i, source in ipairs(sources) do state.sources[i] = source.path end
+    table.sort(state.sources)
+    return true
 end
 
 function catalog:withWriteAccessDo(_, work)

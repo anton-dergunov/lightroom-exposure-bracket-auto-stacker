@@ -11,6 +11,7 @@ returns {
   skippedStacks groups left out because some of their photos are already in the catalog
   skippedPhotos number of single photos left out because they are already in the catalog
   photoCount    number of photos the plan imports
+  folders       folders the photos go to, in first-seen order: { path, stacks, singles, photos }
 }
 Lightroom can only stack photos while importing them, so a bracket with any photo already in the catalog is left
 out whole rather than imported as a broken stack.
@@ -22,10 +23,27 @@ local function path(frame)
     return frame.SourceFile or frame["System:FileName"]
 end
 
+function ImportPlan.directory(file)
+    return file:match("^(.*)[/\\][^/\\]*$") or ""
+end
+
+-- Adds `count` photos (as a stack or as single photos) to the folder that holds `file`.
+local function countIn(plan, index, file, count, isStack)
+    local dir = ImportPlan.directory(file)
+    local folder = index[dir]
+    if not folder then
+        folder = { path = dir, stacks = 0, singles = 0, photos = 0 }
+        index[dir] = folder
+        plan.folders[#plan.folders + 1] = folder
+    end
+    folder.photos = folder.photos + count
+    if isStack then folder.stacks = folder.stacks + 1 else folder.singles = folder.singles + count end
+end
+
 function ImportPlan.build(frames, groups, options)
     local inCatalog = options.inCatalog or function() return false end
-    local plan = { stacks = {}, singles = {}, skippedStacks = {}, skippedPhotos = 0, photoCount = 0 }
-    local grouped = {}
+    local plan = { stacks = {}, singles = {}, skippedStacks = {}, skippedPhotos = 0, photoCount = 0, folders = {} }
+    local grouped, folderIndex = {}, {}
 
     for _, group in ipairs(groups) do
         local paths, known = {}, false
@@ -41,6 +59,7 @@ function ImportPlan.build(frames, groups, options)
         else
             plan.stacks[#plan.stacks + 1] = { paths = paths, group = group }
             plan.photoCount = plan.photoCount + #paths
+            countIn(plan, folderIndex, paths[1], #paths, true)
         end
     end
 
@@ -52,6 +71,7 @@ function ImportPlan.build(frames, groups, options)
                 else
                     plan.singles[#plan.singles + 1] = path(frame)
                     plan.photoCount = plan.photoCount + 1
+                    countIn(plan, folderIndex, path(frame), 1, false)
                 end
             end
         end

@@ -48,19 +48,30 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    the summary says so and asks the user to share sample photos (anonymised is fine), pointing to the README's Help
    Wanted section. The `groups.txt` file goes away.
 
-   *Done (2026-09-29), not yet tried in Lightroom.* `Import.lua` runs both menu items: folder picker, metadata read,
+   *Done (2026-09-29), checked in Lightroom Classic on macOS* with the test photos and a network-drive folder.
+   `Import.lua` runs both menu items: folder picker, metadata read,
    a confirmation with what will be imported, a cancellable progress bar, and a report ending with how to merge the
    stacks. `ImportPlan.lua` decides what to import: brackets whose photos are partly in the catalog already are
    left out whole, since Lightroom cannot add to an existing stack. Each stack has its base exposure on top (the
    middle exposure; the brighter middle frame for a bracket stopped early). `tests/lua/lightroom_fake.lua` stands
    in for the SDK so `test_lightroom_import.lua` runs the real import code on the test photos. The old
    *Import from Groups File* item stays until step 4, because the cleanup script still reads `groups.txt`.
+
+   After the first Lightroom test: counts across subfolders (RAW/ and JPEG/) were confusing, so the confirmation
+   now lists each folder when there are several. Photos a plug-in adds do not appear in Lightroom's *Previous
+   Import*, and it was not obvious where they went, so after importing the plugin switches the Library to the
+   folders it imported into (`catalog:setActiveSources`) and the report names them.
 4. **Cleanup in the plugin.** Port "remove redundant exposures after HDR merge". First check what the SDK allows for
    removing photos from the catalog; if it cannot, document the manual step.
 5. **Remove Python.** Delete the scripts, `requirements.txt` and the pytest suite (fixture checks move to Lua); CI runs
    the Lua tests only. Update the README install and usage sections.
 6. **Merge trigger research.** Can the plugin start HDR merge, or can the headless Shift+Cmd+H merge be scripted? If
-   not, document the shortcut prominently.
+   not, document the shortcut prominently. Known so far:
+   - The SDK cannot collapse or expand stacks, so "Collapse All Stacks" stays a manual step.
+   - Selecting the stack leaders for the user is risky: if the stacks are expanded, HDR merge would combine the
+     selected leaders of different scenes into one image. Only worth doing if collapsed state can be checked first
+     (`photo:getRawMetadata("stackInFolderIsCollapsed")` is readable).
+   - After importing, the Library already shows the imported folders; with several folders it shows all of them.
 7. **Rename** the project, based on what focus-bracket support turns out to cover.
 8. **Benchmark** time-based, visual-similarity and metadata grouping on labelled photos.
 

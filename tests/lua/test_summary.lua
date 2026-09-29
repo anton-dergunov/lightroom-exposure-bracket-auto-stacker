@@ -36,7 +36,8 @@ function tests.asks_for_samples_for_unknown_makes()
 end
 
 local function plan(stacks, singles, skippedStacks, skippedPhotos)
-    local p = { stacks = {}, singles = {}, skippedStacks = {}, skippedPhotos = skippedPhotos or 0, photoCount = 0 }
+    local p = { stacks = {}, singles = {}, skippedStacks = {}, skippedPhotos = skippedPhotos or 0, photoCount = 0,
+        folders = { { path = "/shoot", stacks = stacks, singles = singles, photos = stacks * 3 + singles } } }
     for i = 1, stacks do p.stacks[i] = { paths = { "a", "b", "c" } }; p.photoCount = p.photoCount + 3 end
     for i = 1, singles do p.singles[i] = "s" .. i; p.photoCount = p.photoCount + 1 end
     for i = 1, (skippedStacks or 0) do p.skippedStacks[i] = {} end
@@ -69,6 +70,31 @@ end
 function tests.import_result_when_canceled()
     local _, details = Summary.importResult(plan(2, 0), { stacks = 1, singles = 0, photos = 3, failures = {}, canceled = true })
     contains(details, "stopped before it finished")
+end
+
+function tests.confirmation_lists_each_folder_when_there_are_several()
+    local p = plan(4, 2)
+    p.folders = {
+        { path = "/shoot/RAW", stacks = 2, singles = 1, photos = 7 },
+        { path = "/shoot/JPEG", stacks = 2, singles = 1, photos = 7 },
+    }
+    local headline, details = Summary.confirmation(p, "Sony: 4 exposure brackets", "/shoot/")
+    contains(headline, "Import 14 photos from 2 folders as 4 stacks and 2 single photos?")
+    contains(details, "JPEG: 7 photos, 2 stacks and 1 single photo\nRAW: 7 photos, 2 stacks and 1 single photo")
+end
+
+function tests.folder_names_relative_to_the_chosen_folder()
+    local function eq(a, b) if a ~= b then error(tostring(a) .. " ~= " .. tostring(b), 2) end end
+    eq(Summary.folderName("/shoot/RAW", "/shoot"), "RAW")
+    eq(Summary.folderName("/shoot", "/shoot/"), "shoot")
+    eq(Summary.folderName([[C:\shoot\RAW]], [[C:\shoot]]), "RAW")
+    eq(Summary.folderName("/shooting/RAW", "/shoot"), "/shooting/RAW")
+end
+
+function tests.import_result_says_where_the_photos_are()
+    local _, details = Summary.importResult(plan(1, 0), { stacks = 1, singles = 0, photos = 3, failures = {}, shown = true }, "/")
+    contains(details, "The photos are in the folder under Library > Folders: shoot. The Library is now showing them.")
+    contains(details, "Previous Import")
 end
 
 return tests

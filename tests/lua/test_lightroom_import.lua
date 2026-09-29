@@ -65,7 +65,10 @@ function tests.import_only_bracketed_photos()
         "RAW/DSC03154.ARW: DSC03155.ARW DSC03156.ARW",
         "RAW/DSC03157.ARW: DSC03158.ARW DSC03159.ARW",
     }, "\n"), "stacks")
-    eq(fake.messages[#fake.messages].title, "Imported 16 photos as 6 stacks.", "report")
+    local report = fake.messages[#fake.messages]
+    eq(report.title, "Imported 16 photos as 6 stacks.", "report")
+    assert(report.text:find("The photos are in these folders under Library > Folders: JPEG, RAW. The Library is now showing them.", 1, true), report.text)
+    eq(table.concat(fake.sources, " "), photos .. "/sony-zv-1-chiltern/JPEG " .. photos .. "/sony-zv-1-chiltern/RAW", "folders shown")
 end
 
 function tests.import_entire_folder_then_again()

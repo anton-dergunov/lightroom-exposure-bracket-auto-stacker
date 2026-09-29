@@ -94,11 +94,43 @@ local function skippedLines(plan)
     return lines
 end
 
--- Question asked before importing: headline and details. `detection` is the details text from Summary.describe.
-function Summary.confirmation(plan, detection)
-    local headline = string.format("Import %s as %s?", plural(plan.photoCount, "photo"),
+-- A folder's name relative to the folder the user chose: "RAW" for <root>/RAW, the root's own name for the root.
+function Summary.folderName(path, root)
+    if not root then return path end
+    root = root:gsub("[/\\]+$", "")
+    if path == root then return root:match("[^/\\]+$") or root end
+    if path:sub(1, #root) == root and path:sub(#root + 1, #root + 1):match("[/\\]") then
+        return path:sub(#root + 2)
+    end
+    return path
+end
+
+local function folderNames(plan, root)
+    local names = {}
+    for i, folder in ipairs(plan.folders) do names[i] = Summary.folderName(folder.path, root) end
+    table.sort(names)
+    return names
+end
+
+-- Question asked before importing: headline and details. `detection` is the details text from Summary.describe,
+-- `root` the folder the user chose.
+function Summary.confirmation(plan, detection, root)
+    local fromFolders = #plan.folders > 1 and (" from " .. #plan.folders .. " folders") or ""
+    local headline = string.format("Import %s%s as %s?", plural(plan.photoCount, "photo"), fromFolders,
         counts(#plan.stacks, #plan.singles))
-    local lines = skippedLines(plan)
+    local lines = {}
+    if #plan.folders > 1 then
+        local perFolder = {}
+        for _, folder in ipairs(plan.folders) do
+            perFolder[#perFolder + 1] = string.format("%s: %s, %s", Summary.folderName(folder.path, root),
+                plural(folder.photos, "photo"), counts(folder.stacks, folder.singles))
+        end
+        table.sort(perFolder)
+        for _, line in ipairs(perFolder) do lines[#lines + 1] = line end
+    end
+    local skipped = skippedLines(plan)
+    if #skipped > 0 and #lines > 0 then lines[#lines + 1] = "" end
+    for _, line in ipairs(skipped) do lines[#lines + 1] = line end
     if detection and detection ~= "" then
         if #lines > 0 then lines[#lines + 1] = "" end
         lines[#lines + 1] = detection
@@ -111,8 +143,10 @@ Report after importing. `result`:
   stacks, singles, photos   numbers imported
   failures                  list of "path: message" strings
   canceled                  true if the user stopped the import
+  shown                     true if the Library now shows the folders the photos went to
+`root` is the folder the user chose.
 ]]
-function Summary.importResult(plan, result)
+function Summary.importResult(plan, result, root)
     local headline = string.format("Imported %s as %s.", plural(result.photos, "photo"),
         counts(result.stacks, result.singles))
     local lines = {}
@@ -125,6 +159,14 @@ function Summary.importResult(plan, result)
         lines[#lines + 1] = "Could not import " .. failure
     end
     for _, line in ipairs(skippedLines(plan)) do lines[#lines + 1] = line end
+    if result.photos > 0 then
+        if #lines > 0 then lines[#lines + 1] = "" end
+        local names = table.concat(folderNames(plan, root), ", ")
+        local where = #plan.folders > 1 and "The photos are in these folders" or "The photos are in the folder"
+        lines[#lines + 1] = string.format("%s under Library > Folders: %s.%s", where, names,
+            result.shown and " The Library is now showing them." or "")
+        lines[#lines + 1] = "Lightroom's Previous Import collection does not list photos added by a plug-in."
+    end
     if result.stacks > 0 then
         if #lines > 0 then lines[#lines + 1] = "" end
         lines[#lines + 1] = "To merge the stacks into HDR images: in the Library, choose Photo > Stacking > Collapse All "
