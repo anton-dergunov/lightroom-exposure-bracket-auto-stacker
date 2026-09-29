@@ -92,6 +92,10 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    dialog stacks each result with its sources.
 7. **Rename** the project, based on what focus-bracket support turns out to cover.
 8. **Benchmark** time-based, visual-similarity and metadata grouping on labelled photos.
+9. **Release 1.0.0.** After steps 7 and 8, and after: checking the plugin on Windows; the Sony test shoot
+   ([sony-test-shoot.md](sony-test-shoot.md)) turned into fixtures; trying the cleanup in Lightroom (the first try
+   hit Lightroom's "No script by the name" bug, which a restart fixes). Then set the version in `Info.lua`, build
+   the zip with `tools/package.sh` and publish it as a GitHub release, which the README's install steps link to.
 
 ## Test data
 

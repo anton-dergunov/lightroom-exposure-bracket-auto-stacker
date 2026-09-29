@@ -1,51 +1,59 @@
 # Sony test shoot
 
-Goal: real test data for every Sony drive mode the plugin has to recognise, whether it should group the
-frames (exposure and focus brackets) or leave them alone (other brackets and bursts). Main camera: A7C II. The ZV-E10 and
-RX100 VII repeat a few items to cover other bodies.
+Goal: real metadata for the Sony drive modes the photo library does not already cover, so the plugin can be checked
+on them: which ones to group (exposure and focus brackets) and which to leave alone (other brackets and bursts).
+Main camera: A7C II.
 
-## Setup
+Only the metadata of these photos goes into the repository, as fixtures, so the scene does not matter. A tripod is
+only needed for the focus brackets, where camera movement would spoil a later focus stack; handheld is fine for
+everything else.
 
-- One scene, camera on a tripod or steady surface.
-- File format **RAW+JPEG**, except where a step says otherwise.
-- Drive modes are under the **Drive Mode** button (left on the control wheel) or **MENU → Shooting → Drive Mode**.
-  Menu names below are from memory and may differ slightly by firmware.
-- Note the first and last file number of each item, so the frames can be labelled afterwards.
+## Already covered by the library scan
+
+5- and 9-frame exposure brackets (ZV-1), Single Bracket (ZV-1, ZV-E10, A7 III), continuous bursts (ZV-E10), and
+3-frame brackets from the RX100 VII, ZV-E10 and A7 III. No need to shoot these again.
+
+## Where the settings are (A7C II)
+
+- **Drive mode:** the Drive Mode button (left on the control wheel), or **MENU → Shooting → Drive Mode → Drive
+  Mode**. Pick a mode, then press left or right on it to choose its option (for example the EV step and number of
+  images of Cont. Bracket, or Lo/Hi for WB and DRO Bracket).
+- **Bracket settings:** **MENU → Shooting → Drive Mode → Bracket Settings**: Selftimer during Bracket, Bracket order
+  (0→-→+ or -→0→+), Focus Bracket Order ([0→+] or [0→-→+]), Exposure Smoothing, Shooting Interval, Focus Brckt
+  Saving Dest ([Current Folder] or [New Folder]).
+- **Focus bracket step and count:** in Drive Mode, choose **Focus Bracket** and press left or right to set the step
+  width (1-10); the number of shots (2-299) is set in the same place.
 
 ## Exposure brackets (must be grouped)
 
-- [ ] **Cont. Bracket, 5 frames** (e.g. 1.0EV 5), once each in **A**, **S** and **M**. In M with Auto ISO off the
-      camera varies shutter speed, and the EXIF exposure fields may look different from A and S.
-- [ ] **Cont. Bracket, 9 frames**, if the step size offers it.
-- [ ] **Cont. Bracket with a base exposure compensation**, e.g. +0.7 EV.
-- [ ] **Single Bracket, 3 frames**: one press per frame, a few seconds between presses. The gaps break time-based
-      grouping.
-- [ ] **Incomplete Single Bracket**: start one, stop after two presses, switch drive mode.
-- [ ] **Bracket order**: under **MENU → Bracket Settings → Bracket Order**, shoot one bracket with 0→−→+ and one
-      with −→0→+.
-- [ ] **Back to back**: three 3-frame brackets a few seconds apart, with one normal single shot between two of
-      them.
+- [ ] **Cont. Bracket in S mode and in M mode** (any step, 3 or 5 images). The library's brackets are all from A or
+      P mode; in M mode the EXIF exposure fields may look different.
+- [ ] **Cont. Bracket with a base exposure compensation**, e.g. +0.7 EV, in A mode.
+- [ ] **Bracket order -→0→+**: one Cont. Bracket after switching Bracket order (and switch it back afterwards).
+- [ ] **Back to back**: three Cont. Brackets a few seconds apart, with one normal single shot between two of them.
 
-## Focus bracket (should be grouped, for focus stacking outside Lightroom)
+## Focus brackets (should be grouped, for focus stacking outside Lightroom)
 
-- [ ] **Focus Bracket**, 5 frames, then 10 frames (count and step in Focus Bracket Settings). Needs an autofocus
-      lens. exiftool may not decode Sony's focus-bracket tags yet, so these frames show what the camera actually
-      writes.
+- [ ] **Focus Bracket, 5 shots** and **10 shots**, Focus Bracket Order [0→+]. Autofocus lens, tripod.
+- [ ] **Focus Bracket Order [0→-→+]**: always 3 shots.
+- [ ] **Focus Brckt Saving Dest [New Folder]**: one short focus bracket saved to its own folder.
+
+exiftool may not decode Sony's focus-bracket tags yet, so these frames show what the camera actually writes.
 
 ## Not brackets (must not be grouped as exposure brackets)
 
-- [ ] **WB Bracket** (Lo and Hi) and **DRO Bracket** (Lo and Hi): one exposure saved as three differently processed
-      images. If the modes are greyed out, set File Format to JPEG.
-- [ ] **Continuous Shooting, Hi**: hold the shutter for about a second.
-- [ ] **Self-timer (Cont)**: several frames from one release.
-- ISO and flash brackets: not available on Sony, skip.
+- [ ] **WB bracket** Lo and Hi, and **DRO Bracket** Lo and Hi: one exposure saved as three differently processed
+      images. If they are greyed out, set the file format to JPEG.
+- [ ] **Self-timer(Cont)**: several frames from one release.
+- ISO and flash brackets do not exist on Sony; skip.
 
 ## Other bodies
 
-- [ ] ZV-E10 and RX100 VII: Cont. Bracket 5 frames, and one WB or DRO bracket.
+- [ ] **ZV-E10**: **MENU → Camera Settings1 → Drive Mode**: one WB bracket and one DRO Bracket.
+- [ ] **RX100 VII**: **MENU → Camera Settings1 → Drive Mode**: one WB bracket and one DRO Bracket. (Its exposure
+      bracket mode is called **Cont. Bracket** or **Bracket** depending on firmware.)
 
 ## Afterwards
 
-Tell Claude the folder and file ranges; it turns each item into a metadata-only fixture in `tests/fixtures/sony/`
-and records what each mode writes in [camera-support.md](../camera-support.md). Image files are only committed
-after an explicit check.
+Tell Claude the folder and the file ranges of each item; each becomes a metadata-only fixture in
+`tests/fixtures/sony/`, and what each mode writes goes into [camera-support.md](../camera-support.md).

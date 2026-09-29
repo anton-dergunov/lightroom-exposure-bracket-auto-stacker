@@ -65,7 +65,8 @@ Lightroom Classic is required; the cloud-based Lightroom does not support plugin
 2. In Lightroom Classic, choose **File > Plug-in Manager**, click **Add**, select the `auto-stacker.lrplugin` folder
    and make sure the plugin is enabled.
 
-Nothing else needs to be installed.
+Nothing else needs to be installed. After installing or updating the plugin, restart Lightroom Classic: it
+sometimes does not see a plugin's new files until it restarts ("No script by the name ...").
 
 **From the source code** instead: clone the repository, run `sh tools/fetch-exiftool.sh` once to download ExifTool
 into the plugin, and add the `auto-stacker.lrdevplugin` folder in the Plug-in Manager.
