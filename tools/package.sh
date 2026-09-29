@@ -1,5 +1,6 @@
 #!/bin/sh
-# Build the plugin zip for a release: dist/bracket-stacker-<version>.zip, holding bracket-stacker.lrplugin/ with exiftool.
+# Build the plugin zip for a release: dist/bracket-stacker.zip, holding bracket-stacker.lrplugin/ with exiftool.
+# The name has no version, so .../releases/latest/download/bracket-stacker.zip always gets the newest release.
 # Downloads exiftool first if the plugin folder does not have it yet.
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
@@ -17,7 +18,7 @@ cp -R "$plugin/exiftool" "$work/bracket-stacker.lrplugin/"
 cp "$root/LICENSE" "$work/bracket-stacker.lrplugin/LICENSE.txt"
 
 mkdir -p "$root/dist"
-zip="$root/dist/bracket-stacker-$version.zip"
+zip="$root/dist/bracket-stacker.zip"
 rm -f "$zip"
 (cd "$work" && zip -qr "$zip" bracket-stacker.lrplugin -x '*.DS_Store')
-echo "Built $zip"
+echo "Built $zip (version $version)"

@@ -59,9 +59,11 @@ What to send: every frame of the sequence, straight from the camera (RAW or the 
 
 Lightroom Classic is required; the cloud-based Lightroom does not support plugins.
 
-1. **Get the plugin:** download `bracket-stacker-<version>.zip` from the
-   [latest release](https://github.com/anton-dergunov/lightroom-bracket-stacker/releases/latest) and
-   unzip it. It contains the `bracket-stacker.lrplugin` folder, ExifTool included.
+1. **Get the plugin:** download
+   [bracket-stacker.zip](https://github.com/anton-dergunov/lightroom-bracket-stacker/releases/latest/download/bracket-stacker.zip)
+   (the latest version; all versions and their changes are on the
+   [releases page](https://github.com/anton-dergunov/lightroom-bracket-stacker/releases) and in the
+   [changelog](CHANGELOG.md)) and unzip it. It contains the `bracket-stacker.lrplugin` folder, ExifTool included.
 2. In Lightroom Classic, choose **File > Plug-in Manager**, click **Add**, select the `bracket-stacker.lrplugin` folder
    and make sure the plugin is enabled.
 
