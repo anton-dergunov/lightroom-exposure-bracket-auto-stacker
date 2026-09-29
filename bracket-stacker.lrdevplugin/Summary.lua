@@ -4,7 +4,7 @@ Text shown to the user after bracket detection. Pure Lua 5.1, shared by the plug
 
 local Summary = {}
 
-Summary.HELP_URL = "https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker#help-wanted-sample-photos"
+Summary.HELP_URL = "https://github.com/anton-dergunov/lightroom-bracket-stacker#help-wanted-sample-photos"
 
 local MAX_WARNINGS = 10
 

@@ -11,7 +11,7 @@ local photos = TEST_ROOT .. "/tests/photos/test-photos-v1"
 
 local function available()
     local file = io.open(photos .. "/sony-a7c-ii-greenwich/RAW/DSC02108.ARW", "rb")
-    local tool = io.open(TEST_ROOT .. "/auto-stacker.lrdevplugin/exiftool/mac/exiftool", "rb")
+    local tool = io.open(TEST_ROOT .. "/bracket-stacker.lrdevplugin/exiftool/mac/exiftool", "rb")
     if file then file:close() end
     if tool then tool:close() end
     if not (file and tool) then
@@ -110,7 +110,7 @@ function tests.reject_extra_exposures_after_merging()
     catalog:addPhoto(raw .. "DSC03157-HDR.dng")
 
     fake.confirm = "ok"
-    dofile(TEST_ROOT .. "/auto-stacker.lrdevplugin/RejectExposures.lua")
+    dofile(TEST_ROOT .. "/bracket-stacker.lrdevplugin/RejectExposures.lua")
 
     local rejected = {}
     for _, photo in ipairs(fake.catalog.photos) do

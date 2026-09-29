@@ -155,7 +155,7 @@ function import(name)
     return assert(modules[name], "no fake for " .. name)
 end
 
-_PLUGIN = { path = TEST_ROOT .. "/auto-stacker.lrdevplugin" }
+_PLUGIN = { path = TEST_ROOT .. "/bracket-stacker.lrdevplugin" }
 WIN_ENV = false
 
 state.reset(nil)

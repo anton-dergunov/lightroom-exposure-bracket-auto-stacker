@@ -1,5 +1,5 @@
 .DS_Store
 tests/photos/*
 !tests/photos/fetch.sh
-auto-stacker.lrdevplugin/exiftool/
+bracket-stacker.lrdevplugin/exiftool/
 dist/

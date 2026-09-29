@@ -1,8 +1,8 @@
 return {
 	LrSdkVersion = 6.0,
 	LrSdkMinimumVersion = 6.0,
-	LrToolkitIdentifier = 'com.anton_dergunov.auto_stacker',
-	LrPluginName = "Auto Stacker",
+	LrToolkitIdentifier = 'com.anton_dergunov.bracket_stacker',
+	LrPluginName = "Bracket Stacker",
 	LrLibraryMenuItems = {
 		{
 		    title = "Import Only Bracketed Photos, as Stacks...",

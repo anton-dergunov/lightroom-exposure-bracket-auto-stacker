@@ -10,7 +10,7 @@ local Grouping = require 'Grouping'
 
 local root = TEST_ROOT
 local photos = root .. "/tests/photos/test-photos-v1"
-local exiftool = root .. "/auto-stacker.lrdevplugin/exiftool/mac/exiftool"
+local exiftool = root .. "/bracket-stacker.lrdevplugin/exiftool/mac/exiftool"
 
 local function exists(path)
     local file = io.open(path, "rb")
@@ -35,7 +35,7 @@ local function readFolder(folder)
     os.execute(ExifToolCommand.commandLine({
         platform = "mac",
         program = { "perl", exiftool },
-        tagsArgs = root .. "/auto-stacker.lrdevplugin/tags.args",
+        tagsArgs = root .. "/bracket-stacker.lrdevplugin/tags.args",
         runArgs = files.runArgs, output = files.output, errors = files.errors,
     }))
     local frames = assert(ExifToolCommand.parse(readFile(files.output)))

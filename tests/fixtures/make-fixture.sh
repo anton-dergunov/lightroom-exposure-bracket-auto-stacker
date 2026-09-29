@@ -11,7 +11,7 @@
 # Requires exiftool (override with EXIFTOOL=/path/to/exiftool) and jq.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
-tags="$here/../../auto-stacker.lrdevplugin/tags.args"
+tags="$here/../../bracket-stacker.lrdevplugin/tags.args"
 dump=""; root=""
 while [ $# -gt 0 ]; do
     case "$1" in

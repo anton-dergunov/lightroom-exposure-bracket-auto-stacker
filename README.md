@@ -1,12 +1,12 @@
-# Lightroom Auto Stacker Plugin
+# Bracket Stacker for Lightroom Classic
 
-[![Tests](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/actions/workflows/tests.yaml/badge.svg)](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/actions/workflows/tests.yaml)
+[![Tests](https://github.com/anton-dergunov/lightroom-bracket-stacker/actions/workflows/tests.yaml/badge.svg)](https://github.com/anton-dergunov/lightroom-bracket-stacker/actions/workflows/tests.yaml)
 
 ![Demo](assets/demo.gif)
 
 ## Overview
 
-The **Lightroom Auto Stacker Plugin** streamlines the process of creating HDR images by _automating the detection and stacking of exposure-bracketed photos_ in Adobe Lightroom. This tool is designed for photographers who manage large volumes of images or work with mixed sets of bracketed and single exposure photos. Using EXIF metadata, the plugin reliably groups photos taken in burst mode (3, 5, or any other number of exposures) – even when these images are intermingled with non-bracketed photos in the same folder.
+**Bracket Stacker** streamlines creating HDR images in Adobe Lightroom Classic by _finding bracketed sequences and importing each one as a stack_, ready for Lightroom's HDR merge. It is designed for photographers who manage large volumes of images or mix bracketed and single shots. Using what the camera recorded about each shot, it reliably groups exposure brackets of any length (3, 5, 9 or more frames), even when they are mixed with single photos in the same folder, and it also recognises focus brackets.
 
 ## Purpose and Motivation
 
@@ -59,17 +59,17 @@ What to send: every frame of the sequence, straight from the camera (RAW or the 
 
 Lightroom Classic is required; the cloud-based Lightroom does not support plugins.
 
-1. **Get the plugin:** download `auto-stacker-<version>.zip` from the
-   [latest release](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/releases/latest) and
-   unzip it. It contains the `auto-stacker.lrplugin` folder, ExifTool included.
-2. In Lightroom Classic, choose **File > Plug-in Manager**, click **Add**, select the `auto-stacker.lrplugin` folder
+1. **Get the plugin:** download `bracket-stacker-<version>.zip` from the
+   [latest release](https://github.com/anton-dergunov/lightroom-bracket-stacker/releases/latest) and
+   unzip it. It contains the `bracket-stacker.lrplugin` folder, ExifTool included.
+2. In Lightroom Classic, choose **File > Plug-in Manager**, click **Add**, select the `bracket-stacker.lrplugin` folder
    and make sure the plugin is enabled.
 
 Nothing else needs to be installed. After installing or updating the plugin, restart Lightroom Classic: it
 sometimes does not see a plugin's new files until it restarts ("No script by the name ...").
 
 **From the source code** instead: clone the repository, run `sh tools/fetch-exiftool.sh` once to download ExifTool
-into the plugin, and add the `auto-stacker.lrdevplugin` folder in the Plug-in Manager.
+into the plugin, and add the `bracket-stacker.lrdevplugin` folder in the Plug-in Manager.
 
 ## Usage
 

@@ -4,7 +4,7 @@
   "complete": true,
   "exiftool": "13.59",
   "source": {
-    "url": "https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/releases/tag/test-photos-v1",
+    "url": "https://github.com/anton-dergunov/lightroom-bracket-stacker/releases/tag/test-photos-v1",
     "license": "MIT (same as this repository)",
     "author": "Anton Dergunov"
   },

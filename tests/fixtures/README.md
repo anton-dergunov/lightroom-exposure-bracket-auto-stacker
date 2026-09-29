@@ -33,7 +33,7 @@ logic is tested against.
 - `frames[].SourceFile`: optional, only for fixtures spanning several folders: the photo's path relative to the
   folder the photos came from, such as `101MSDCF/DSC00001.ARW`. Cameras restart file numbers in a new folder, so
   file names alone can repeat. `groups` then list these paths instead of file names. Absolute paths are rejected.
-- `frames`: exiftool output (`-j -n -G1:4 -a`), keeping only the tags in the plugin's [tags.args](../../auto-stacker.lrdevplugin/tags.args). Keys are
+- `frames`: exiftool output (`-j -n -G1:4 -a`), keeping only the tags in the plugin's [tags.args](../../bracket-stacker.lrdevplugin/tags.args). Keys are
   `Group:Tag`, because the same tag often appears in several groups (for example `ExifIFD:ExposureCompensation` and
   `Canon:ExposureCompensation`). A tag repeated within one group gets a copy number, such as
   `Sony:Copy1:SequenceLength`. Values are numeric (`-n`); exiftool's tag documentation explains them.

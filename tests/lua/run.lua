@@ -10,7 +10,7 @@ functions.
 ]]
 
 local root = (arg[0]:match("^(.*)[/\\]tests[/\\]lua[/\\]run%.lua$") or ".")
-package.path = root .. "/auto-stacker.lrdevplugin/?.lua;" .. package.path
+package.path = root .. "/bracket-stacker.lrdevplugin/?.lua;" .. package.path
 -- Repository root, for test files that read other files from the repository.
 TEST_ROOT = root
 
@@ -44,7 +44,7 @@ local function describe(groups)
 end
 
 local allowedTags = {}
-for line in readFile(root .. "/auto-stacker.lrdevplugin/tags.args"):gmatch("[^\r\n]+") do
+for line in readFile(root .. "/bracket-stacker.lrdevplugin/tags.args"):gmatch("[^\r\n]+") do
     local tag = line:match("^%s*%-(%S+)")
     if tag then allowedTags[tag] = true end
 end

@@ -1,5 +1,5 @@
 #!/bin/sh
-# Download the exiftool version the plugin is tested with into auto-stacker.lrdevplugin/exiftool/:
+# Download the exiftool version the plugin is tested with into bracket-stacker.lrdevplugin/exiftool/:
 #   mac/  the Perl distribution (macOS runs it with its own /usr/bin/perl)
 #   win/  the standalone Windows build, which includes Perl
 # Run it once after cloning, and again when the pinned version changes. Requires curl, tar and unzip.
@@ -9,7 +9,7 @@ MAC_SHA256=668ea3acececb7235fbd0f4900e72d5f12c9b07e5c778fd36cb1e9b5828fd65a
 WIN_SHA256=44b512b25af500724ba579d0a53c8fc5851628b692dd5e5d94ae4a15c2cba9ec
 
 root=$(cd "$(dirname "$0")/.." && pwd)
-dest="$root/auto-stacker.lrdevplugin/exiftool"
+dest="$root/bracket-stacker.lrdevplugin/exiftool"
 work=$(mktemp -d)
 # The Windows zip unpacks read-only files, so make everything writable before deleting it.
 trap 'chmod -R u+w "$work"; rm -rf "$work"' EXIT
