@@ -52,17 +52,28 @@ function tests.sony_white_balance_and_dro_brackets_are_not_grouped()
 end
 
 function tests.sony_interrupted_single_bracket_then_complete_bracket()
-    -- Single Bracket mode reports SequenceLength "1 file"; the user stopped after two frames.
-    local groups = Grouping.group(frames("SONY", {
-        { ["Sony:SequenceImageNumber"] = 1, ["Sony:SequenceLength"] = 1 },
-        { ["Sony:SequenceImageNumber"] = 2, ["Sony:SequenceLength"] = 1 },
-        { ["Sony:SequenceImageNumber"] = 1, ["Sony:SequenceLength"] = 3 },
-        { ["Sony:SequenceImageNumber"] = 2, ["Sony:SequenceLength"] = 3 },
-        { ["Sony:SequenceImageNumber"] = 3, ["Sony:SequenceLength"] = 3 },
-    }, { ["Sony:ReleaseMode"] = 5 }))
+    -- Single Bracket mode: one SequenceLength copy says 1, the other the real length. The user stopped after two.
+    local groups, warnings = Grouping.group(frames("SONY", {
+        { ["Sony:SequenceImageNumber"] = 1, ["Sony:SequenceLength"] = 1, ["Sony:Copy1:SequenceLength"] = 3 },
+        { ["Sony:SequenceImageNumber"] = 2, ["Sony:SequenceLength"] = 1, ["Sony:Copy1:SequenceLength"] = 3 },
+        { ["Sony:SequenceImageNumber"] = 1, ["Sony:SequenceLength"] = 3, ["Sony:Copy1:SequenceLength"] = 3 },
+        { ["Sony:SequenceImageNumber"] = 2, ["Sony:SequenceLength"] = 3, ["Sony:Copy1:SequenceLength"] = 3 },
+        { ["Sony:SequenceImageNumber"] = 3, ["Sony:SequenceLength"] = 3, ["Sony:Copy1:SequenceLength"] = 3 },
+    }, { ["Sony:ReleaseMode"] = 5, ["Sony:ReleaseMode2"] = 23, ["ExifIFD:ExposureMode"] = 2 }))
     eq(sizes(groups), "2,3", "groups")
-    eq(groups[1].complete, nil, "first group completeness")
-    eq(groups[2].complete, true, "second group completeness")
+    eq(groups[1].complete, false, "stopped bracket is incomplete")
+    eq(groups[2].complete, true, "second bracket is complete")
+    eq(#warnings, 1, "warnings")
+end
+
+function tests.sony_focus_bracket_length_and_kind()
+    local list = {}
+    for i = 1, 4 do list[i] = { ["Sony:SequenceImageNumber"] = i, ["Sony:SequenceLength"] = 1, ["Sony:Copy1:SequenceLength"] = 4 } end
+    local groups = Grouping.group(frames("SONY", list,
+        { ["Sony:ReleaseMode"] = 5, ["Sony:ReleaseMode2"] = 23, ["ExifIFD:ExposureMode"] = 0 }))
+    eq(sizes(groups), "4", "groups")
+    eq(groups[1].kind, "focus", "kind")
+    eq(groups[1].complete, true, "complete")
 end
 
 function tests.tagged_sequence_split_by_long_pause()

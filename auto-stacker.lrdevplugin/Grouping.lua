@@ -1,5 +1,5 @@
 --[[
-Finds bracketed sequences in exiftool output (-j -n -G1 -a with tags.args).
+Finds bracketed sequences in exiftool output (-j -n -G1:4 -a with tags.args).
 
 Grouping.group(frames) takes the decoded list of frames and returns:
   groups    list of { frames, kind, vendor, validated, complete, length, base }, frames in shot order.
@@ -170,7 +170,9 @@ end
 -- Whether `shot` starts a new sequence rather than continuing `current`.
 local function startsNew(vendor, current, shot)
     if not current or current.kind ~= shot.kind then return true end
-    if current.length and #current.frames >= current.length then return true end
+    -- Positions, when the camera records them, decide; a recorded length only splits sequences without positions
+    -- (it can also be wrong: Sony stores it in one byte).
+    if current.length and not shot.position and #current.frames >= current.length then return true end
     local last = current.last
     local gap = (shot.time >= 0 and last.time >= 0) and (shot.time - last.time) or 0
     if vendor.strategy == "tagged" then
@@ -239,6 +241,8 @@ function Grouping.group(frames)
                 end
                 table.insert(current.frames, shot.frame)
                 if shot.offset ~= nil then table.insert(current.offsets, shot.offset) end
+                -- A position beyond the recorded length means the length is wrong; treat it as unknown.
+                if current.length and shot.position and shot.position > current.length then current.length = nil end
                 current.last = shot
             end
         end

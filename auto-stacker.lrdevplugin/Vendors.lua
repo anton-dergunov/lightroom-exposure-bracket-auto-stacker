@@ -42,6 +42,18 @@ local function numbers(value)
     return list
 end
 
+-- Largest number among a tag's copies in one group ("Sony:SequenceLength", "Sony:Copy1:SequenceLength", ...).
+function Vendors.largest(frame, group, tag)
+    local best
+    for key, value in pairs(frame) do
+        if key:sub(1, #group + 1) == group .. ":" and key:match(":" .. tag .. "$") then
+            local number = Vendors.firstNumber(value)
+            if number and (not best or number > best) then best = number end
+        end
+    end
+    return best
+end
+
 local function bitSet(value, bit)
     return math.floor((value or 0) / bit) % 2 == 1
 end
@@ -54,11 +66,22 @@ Vendors.list = {
         make = { "^sony" },
         strategy = "tagged",
         validated = true,
-        -- 6 (white balance) and 8 (DRO) are brackets of one exposure, not exposure brackets.
-        kind = { { tag = "Sony:ReleaseMode", values = { [5] = "exposure" } } },
+        -- ReleaseMode 5 covers exposure brackets and, on bodies that have it, focus brackets. A focus bracket has
+        -- the same drive tags as a Single Bracket (ReleaseMode2 23), but EXIF ExposureMode is "Auto bracket" (2) only
+        -- on exposure brackets (A7C II, even in M mode). ReleaseMode 6 (white balance) and 8 (DRO) bracket one
+        -- exposure, so they are not grouped.
+        kind = function(frame)
+            if Vendors.firstNumber(frame["Sony:ReleaseMode"]) ~= 5 then return nil end
+            if Vendors.firstNumber(frame["Sony:ReleaseMode2"]) == 23
+                and Vendors.firstNumber(frame["ExifIFD:ExposureMode"]) ~= 2 then
+                return "focus"
+            end
+            return "exposure"
+        end,
         position = "Sony:SequenceImageNumber",
-        -- "1 file" in Single Bracket mode, 0 for continuous shooting; values up to 1 are ignored.
-        length = "Sony:SequenceLength",
+        -- Sony writes SequenceLength twice; in Single Bracket and focus-bracket mode one copy says 1 and the other
+        -- the real length, so take the largest. It is a single byte, so a 299-shot bracket reads 43.
+        length = function(frame) return Vendors.largest(frame, "Sony", "SequenceLength") end,
     },
     {
         name = "Canon",

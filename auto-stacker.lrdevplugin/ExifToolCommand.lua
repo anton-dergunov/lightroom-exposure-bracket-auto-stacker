@@ -18,7 +18,7 @@ ExifToolCommand.EXTENSIONS = {
 
 -- Lines of the per-run argument file: output format, which files to read, and the folder.
 function ExifToolCommand.runArgs(folder, recursive)
-    local lines = { "-j", "-n", "-G1", "-a", "-q", "-q", "-m", "-charset", "filename=utf8" }
+    local lines = { "-j", "-n", "-G1:4", "-a", "-q", "-q", "-m", "-charset", "filename=utf8" }
     if recursive then lines[#lines + 1] = "-r" end
     for _, ext in ipairs(ExifToolCommand.EXTENSIONS) do
         lines[#lines + 1] = "-ext"

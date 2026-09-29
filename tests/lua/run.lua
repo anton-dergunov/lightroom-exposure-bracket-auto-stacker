@@ -66,7 +66,7 @@ local function checkFormat(path, fixture)
         check(name and not present[name], "missing or duplicate file name: " .. tostring(name))
         present[name] = true
         for key in pairs(frame) do
-            local group, tag = key:match("^([^:]+):(.+)$")
+            local group, tag = key:match("^([^:]+):.-([^:]+)$")
             check(group and allowedTags[tag], name .. ": " .. key .. " is not in tags.args")
         end
     end
@@ -93,7 +93,11 @@ local function checkFixture(path)
     checkFormat(path, fixture)
     local groups = Grouping.group(fixture.frames)
     local actual = {}
-    for i, group in ipairs(groups) do actual[i] = names(group.frames) end
+    for i, group in ipairs(groups) do
+        actual[i] = names(group.frames)
+        check(group.kind == fixture.kind, string.format("group starting at %s is a %s bracket, the fixture's kind is %s",
+            actual[i][1], group.kind, fixture.kind))
+    end
     local want, got = describe(fixture.expected or fixture.groups), describe(actual)
     if want ~= got then
         error(string.format("expected groups:\n%s\ngot:\n%s", want == "" and "(none)" or want, got == "" and "(none)" or got), 0)

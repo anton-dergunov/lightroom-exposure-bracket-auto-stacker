@@ -30,9 +30,10 @@ logic is tested against.
 - `derived`: present when the originals' license does not allow redistribution (non-commercial or all rights
   reserved). File names, dates and shutter counts are replaced; times of day, intervals and every bracket tag are
   kept as the camera wrote them. The field says exactly what was changed.
-- `frames`: exiftool output (`-j -n -G1 -a`), keeping only the tags in the plugin's [tags.args](../../auto-stacker.lrdevplugin/tags.args). Keys are
+- `frames`: exiftool output (`-j -n -G1:4 -a`), keeping only the tags in the plugin's [tags.args](../../auto-stacker.lrdevplugin/tags.args). Keys are
   `Group:Tag`, because the same tag often appears in several groups (for example `ExifIFD:ExposureCompensation` and
-  `Canon:ExposureCompensation`). Values are numeric (`-n`); exiftool's tag documentation explains them.
+  `Canon:ExposureCompensation`). A tag repeated within one group gets a copy number, such as
+  `Sony:Copy1:SequenceLength`. Values are numeric (`-n`); exiftool's tag documentation explains them.
 
 ## Adding a fixture
 
@@ -69,4 +70,4 @@ the `sony-a7c-ii-greenwich` and `sony-zv-1-chiltern` fixtures frame for frame.
 | Olympus / OM System | none: 1 focus-bracket frame and 2 camera-made focus stacks | E-M5 Mark III, OM-5 Mark II |
 | Fujifilm | none | X-S10, X-T3 (derived) |
 | Pentax | derived: K-50 | K-1, KP, consecutive K-3 Mark III frames |
-| Sony | 2 exposure brackets shot RAW+JPEG (A7C II, ZV-1) | A7 IV, A7R V, A6700, ZV-E1 continuous burst |
+| Sony | A7C II: exposure brackets in every mode, back to back and stopped early; focus brackets up to 258 shots. ZV-1: brackets and a stopped Single Bracket. Both RAW+JPEG sets match the test photos | A7C II WB and DRO brackets and self-timer bursts; A7 IV, A7R V, A6700, ZV-E1 continuous burst |

@@ -1,5 +1,7 @@
 # Tags the plugin reads, and the only tags kept in test fixtures: an exiftool argument file.
-# Use with: exiftool -j -n -G1 -a -@ auto-stacker.lrdevplugin/tags.args FILES
+# Use with: exiftool -j -n -G1:4 -a -@ auto-stacker.lrdevplugin/tags.args FILES
+# (-G1:4 keeps repeated tags apart: Sony writes SequenceLength twice, as Sony:SequenceLength and
+# Sony:Copy1:SequenceLength, and only one of them holds the real length.)
 # Anything not listed here (serial numbers, owner names, GPS, paths) is never stored.
 
 # Identity and ordering
@@ -16,6 +18,7 @@
 
 # Exposure
 -ExposureMode
+-ExposureProgram
 -ExposureCompensation
 -ExposureTime
 -FNumber
