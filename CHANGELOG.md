@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 (unreleased)
+## 1.0.0 (2026-09-29)
 
 The plugin is now called **Bracket Stacker** (formerly Auto Stacker) and works entirely inside Lightroom Classic.
 When upgrading, remove the old Auto Stacker plugin in the Plug-in Manager, add the new one and restart Lightroom.
