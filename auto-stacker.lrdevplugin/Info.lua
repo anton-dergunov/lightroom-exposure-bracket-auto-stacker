@@ -13,12 +13,10 @@ return {
 		    file = "ImportFolder.lua",
 		},
 		{
-		    title = "Preview Brackets in Folder...",
-		    file = "PreviewBrackets.lua",
-		},
-		{
 		    title = "Reject Extra Exposures After HDR Merge...",
 		    file = "RejectExposures.lua",
+		    -- Works on photos already in view; the SDK has no menu separators to set it apart.
+		    enabledWhen = "photosAvailable",
 		},
 	},
 	VERSION = { major=0, minor=0, revision=1, build="", },

@@ -86,8 +86,6 @@ All commands are under **Library > Plug-in Extras**.
    can only stack photos while importing them. Afterwards the Library shows the folders the photos went to. Photos
    imported this way do not appear in Lightroom's *Previous Import* collection.
 
-   **Preview Brackets in Folder...** shows what a folder contains without importing anything.
-
 2. **Merge all stacks into HDR images.**
    - Choose **Photo > Stacking > Collapse All Stacks**.
    - Select the stacks and choose **Photo > Photo Merge > HDR...** (Ctrl+H; Control+H on macOS). Lightroom merges

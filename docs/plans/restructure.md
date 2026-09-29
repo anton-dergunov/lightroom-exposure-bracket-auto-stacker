@@ -36,7 +36,8 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    command (folder and options go through a temporary argument file, so unusual paths survive), `ExifTool.lua` runs
    it inside Lightroom, and `Summary.lua` writes the result text, including the request for sample photos. The
    tag list moved to the plugin (`auto-stacker.lrdevplugin/tags.args`). A new menu item, *Preview Brackets in
-   Folder…*, reports what would be stacked without importing. `tests/lua/test_photos.lua` runs the same command on
+   Folder…*, reported what would be stacked without importing (removed after step 3: the import's confirmation
+   shows the same and can be cancelled). `tests/lua/test_photos.lua` runs the same command on
    the test photos and matches the fixtures. Checked in Lightroom Classic on macOS: the test photos (10 brackets
    in 34 photos) and a 364-photo folder on a network drive (122 brackets). Not yet checked on Windows.
 3. **One-step import, two menu items.** The wording that differs comes first:
@@ -64,7 +65,8 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
 4. **Cleanup in the plugin.** Port "remove redundant exposures after HDR merge". First check what the SDK allows for
    removing photos from the catalog; if it cannot, document the manual step.
 
-   *Done (2026-09-29), not yet tried in Lightroom.* The SDK cannot remove photos from the catalog, and moving files
+   *Done (2026-09-29), checked in Lightroom Classic on macOS* (after a restart: see step 9). The SDK cannot remove
+   photos from the catalog, and moving files
    behind Lightroom's back leaves them marked missing. Instead, *Reject Extra Exposures After HDR Merge…* flags the
    source photos of merged stacks as rejected (keeping the base exposure, or rejecting all of them), and Lightroom's
    own *Photo > Delete Rejected Photos* removes them from the catalog or moves the files to the Trash. It works on
@@ -93,8 +95,8 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
 7. **Rename** the project, based on what focus-bracket support turns out to cover.
 8. **Benchmark** time-based, visual-similarity and metadata grouping on labelled photos.
 9. **Release 1.0.0.** After steps 7 and 8, and after: checking the plugin on Windows; the Sony test shoot
-   ([sony-test-shoot.md](sony-test-shoot.md)) turned into fixtures; trying the cleanup in Lightroom (the first try
-   hit Lightroom's "No script by the name" bug, which a restart fixes). Then set the version in `Info.lua`, build
+   ([sony-test-shoot.md](sony-test-shoot.md)) turned into fixtures. (Lightroom sometimes misses a plugin's new files
+   until it restarts, "No script by the name ...": the README tells users to restart after updating.) Then set the version in `Info.lua`, build
    the zip with `tools/package.sh` and publish it as a GitHub release, which the README's install steps link to.
 
 ## Test data
