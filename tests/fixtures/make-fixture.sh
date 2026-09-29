@@ -1,5 +1,5 @@
 #!/bin/sh
-# Build a fixture skeleton from photos, keeping only the tags in tags.args.
+# Build a fixture skeleton from photos, keeping only the tags in the plugin's tags.args.
 #
 # Usage:
 #   make-fixture.sh ID PHOTO...        read the photos with exiftool
@@ -9,6 +9,7 @@
 # Requires exiftool (override with EXIFTOOL=/path/to/exiftool) and jq.
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
+tags="$here/../../auto-stacker.lrdevplugin/tags.args"
 dump=""
 if [ "${1:-}" = "-d" ]; then dump="$2"; shift 2; fi
 id="$1"; shift
@@ -16,10 +17,10 @@ id="$1"; shift
 if [ -n "$dump" ]; then
     frames=$(cat "$dump")
 else
-    frames=$("${EXIFTOOL:-exiftool}" -j -n -G1 -a -@ "$here/tags.args" -ExifToolVersion "$@")
+    frames=$("${EXIFTOOL:-exiftool}" -j -n -G1 -a -@ "$tags" -ExifToolVersion "$@")
 fi
 
-printf '%s' "$frames" | jq --arg id "$id" --rawfile args "$here/tags.args" '
+printf '%s' "$frames" | jq --arg id "$id" --rawfile args "$tags" '
     ($args | split("\n") | map(select(startswith("-")) | ltrimstr("-"))) as $keep
     | {
         id: $id,

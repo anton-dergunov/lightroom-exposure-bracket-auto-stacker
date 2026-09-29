@@ -1,5 +1,5 @@
 --[[
-Finds bracketed sequences in exiftool output (-j -n -G1 -a with tests/fixtures/tags.args).
+Finds bracketed sequences in exiftool output (-j -n -G1 -a with tags.args).
 
 Grouping.group(frames) takes the decoded list of frames and returns:
   groups    list of { frames, kind, vendor, validated, complete, length }, frames in shot order.

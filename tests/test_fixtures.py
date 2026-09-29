@@ -7,7 +7,7 @@ FIXTURES = Path(__file__).parent / "fixtures"
 FIXTURE_FILES = sorted(FIXTURES.glob("*/*.json"))
 ALLOWED_TAGS = {
     line.strip()[1:]
-    for line in (FIXTURES / "tags.args").read_text(encoding="utf-8").splitlines()
+    for line in (FIXTURES.parents[1] / "auto-stacker.lrdevplugin" / "tags.args").read_text(encoding="utf-8").splitlines()
     if line.strip().startswith("-")
 }
 

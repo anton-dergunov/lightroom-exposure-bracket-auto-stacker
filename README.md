@@ -74,8 +74,14 @@ What to send: every frame of the sequence, straight from the camera (RAW or the 
 2. **Open Plug-in Manager:**
    - Navigate to **File > Plug-in Manager**.
 3. **Add the Plugin:**
-   - Click **Add** and select the `auto-stacker.lrplugin` folder.
+   - Click **Add** and select the `auto-stacker.lrdevplugin` folder.
    - Enable the plugin once added.
+4. **Download exiftool into the plugin** (once, when installing from the source code):
+   ```sh
+   sh tools/fetch-exiftool.sh
+   ```
+   **Library > Plugin Extras > Preview Brackets in Folder...** then shows which bracketed sequences a folder
+   contains, without importing anything and without needing Python.
 
 ## Usage
 

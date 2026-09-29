@@ -21,10 +21,23 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
 
 1. **Grouping core in Lua.** Pure-Lua modules that take exiftool output and return the groups, driven by a table of
    camera brands and tested against every fixture. No Lightroom dependency, so the tests run with plain Lua.
+
+   *Done (2026-09-29).* `Grouping.lua` and `Vendors.lua` cover Sony, Canon, Nikon, Panasonic, Pentax, OM System /
+   Olympus and Fujifilm. `tests/lua/run.lua` checks every fixture plus synthetic cases for rules without real test
+   data; CI runs it on Lua 5.1. Found along the way: `SubSecTime` belongs to the modification time, so only
+   `SubSecTimeOriginal` is used; Sony's Single Bracket mode reports a sequence length of 1.
 2. **exiftool inside the plugin.** Bundle exiftool 13.x with its license (the Windows build includes its own Perl;
    on macOS it uses the Perl that ships with the system). Run it once per folder with
    `-j -n -G1 -a -r -@ tags.args`, writing to a temporary file. Handle Windows quoting, missing files and exiftool
    errors.
+
+   *Done (2026-09-29).* `tools/fetch-exiftool.sh` downloads exiftool 13.59 (checksums pinned) into the plugin's
+   `exiftool/` folder, which git ignores; a plugin release zip will include it. `ExifToolCommand.lua` builds the
+   command (folder and options go through a temporary argument file, so unusual paths survive), `ExifTool.lua` runs
+   it inside Lightroom, and `Summary.lua` writes the result text, including the request for sample photos. The
+   tag list moved to the plugin (`auto-stacker.lrdevplugin/tags.args`). A new menu item, *Preview Brackets in
+   Folder…*, reports what would be stacked without importing. `tests/lua/test_photos.lua` runs the same command on
+   the test photos and matches the fixtures. Not yet checked: running inside Lightroom, on macOS and on Windows.
 3. **One-step import, two menu items.** The wording that differs comes first:
    - *Import Only Bracketed Photos, as Stacks…*: only frames in detected sequences (the current behaviour).
    - *Import Entire Folder, Brackets as Stacks…*: every photo; single shots are imported as normal, and photos

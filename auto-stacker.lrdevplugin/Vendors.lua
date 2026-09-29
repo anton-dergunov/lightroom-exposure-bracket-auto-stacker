@@ -1,6 +1,6 @@
 --[[
 Camera brands the grouping understands, and how each one marks a bracketed sequence in its metadata.
-Tag names are exiftool's "Group:Tag" keys (see tests/fixtures/tags.args).
+Tag names are exiftool's "Group:Tag" keys (see tags.args).
 
   name       Brand name shown to the user.
   make       Lua patterns, matched against the lowercased Make tag.

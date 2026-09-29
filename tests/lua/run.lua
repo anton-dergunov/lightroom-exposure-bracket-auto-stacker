@@ -9,6 +9,8 @@ no "expected". A .lua argument is a test file returning a table of named test fu
 
 local root = (arg[0]:match("^(.*)[/\\]tests[/\\]lua[/\\]run%.lua$") or ".")
 package.path = root .. "/auto-stacker.lrdevplugin/?.lua;" .. package.path
+-- Repository root, for test files that read other files from the repository.
+TEST_ROOT = root
 
 local json = require 'Json'
 local Grouping = require 'Grouping'

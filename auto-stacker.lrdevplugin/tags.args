@@ -1,5 +1,5 @@
-# Tags kept in fixtures (and read by the plugin): exiftool argument file.
-# Use with: exiftool -j -n -G1 -a -@ tests/fixtures/tags.args FILES
+# Tags the plugin reads, and the only tags kept in test fixtures: an exiftool argument file.
+# Use with: exiftool -j -n -G1 -a -@ auto-stacker.lrdevplugin/tags.args FILES
 # Anything not listed here (serial numbers, owner names, GPS, paths) is never stored.
 
 # Identity and ordering

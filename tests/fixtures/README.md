@@ -30,7 +30,7 @@ logic is tested against.
 - `derived`: present when the originals' license does not allow redistribution (non-commercial or all rights
   reserved). File names, dates and shutter counts are replaced; times of day, intervals and every bracket tag are
   kept as the camera wrote them. The field says exactly what was changed.
-- `frames`: exiftool output (`-j -n -G1 -a`), keeping only the tags in [tags.args](tags.args). Keys are
+- `frames`: exiftool output (`-j -n -G1 -a`), keeping only the tags in the plugin's [tags.args](../../auto-stacker.lrdevplugin/tags.args). Keys are
   `Group:Tag`, because the same tag often appears in several groups (for example `ExifIFD:ExposureCompensation` and
   `Canon:ExposureCompensation`). Values are numeric (`-n`); exiftool's tag documentation explains them.
 
