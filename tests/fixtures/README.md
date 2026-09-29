@@ -70,4 +70,4 @@ the `sony-a7c-ii-greenwich` and `sony-zv-1-chiltern` fixtures frame for frame.
 | Olympus / OM System | none: 1 focus-bracket frame and 2 camera-made focus stacks | E-M5 Mark III, OM-5 Mark II |
 | Fujifilm | none | X-S10, X-T3 (derived) |
 | Pentax | derived: K-50 | K-1, KP, consecutive K-3 Mark III frames |
-| Sony | A7C II: exposure brackets in every mode, back to back and stopped early; focus brackets up to 258 shots. ZV-1: brackets and a stopped Single Bracket. Both RAW+JPEG sets match the test photos | A7C II WB and DRO brackets and self-timer bursts; A7 IV, A7R V, A6700, ZV-E1 continuous burst |
+| Sony | A7C II: exposure brackets in every mode, back to back and stopped early; focus brackets up to 258 shots. RX100 VII: brackets in every mode and 9 frames at 0.3 EV, RAW+JPEG. ZV-1: brackets and a stopped Single Bracket. The A7C II Greenwich and ZV-1 sets match the test photos | A7C II and RX100 VII WB and DRO brackets, bursts and self-timer shots; A7 IV, A7R V, A6700, ZV-E1 continuous burst |

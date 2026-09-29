@@ -51,7 +51,7 @@ exiftool may not decode Sony's focus-bracket tags yet, so these frames show what
 ## Other bodies
 
 - [ ] **ZV-E10**: **MENU → Camera Settings1 → Drive Mode**: one WB bracket and one DRO Bracket.
-- [ ] **RX100 VII**: **MENU → Camera Settings1 → Drive Mode**: one WB bracket and one DRO Bracket. (Its exposure
+- [x] **RX100 VII**: **MENU → Camera Settings1 → Drive Mode**: one WB bracket and one DRO Bracket. (Its exposure
       bracket mode is called **Cont. Bracket** or **Bracket** depending on firmware.)
 
 ## Results (A7C II, 2026-09-29)
@@ -64,7 +64,13 @@ exiftool may not decode Sony's focus-bracket tags yet, so these frames show what
 - WB bracket ReleaseMode 6, DRO Bracket ReleaseMode 8: three images with one timestamp. Self-timer(Cont):
   ReleaseMode 2, ReleaseMode2 26.
 
-Still open: Focus Bracket Order [0→-→+] and Focus Brckt Saving Dest [New Folder]; the other bodies.
+## Results (RX100 VII, 2026-09-29)
+
+136 files (RAW+JPEG), now the `sony-rx100-vii-*` fixtures: exposure brackets in A, P, S and M mode, with base
+compensation, and 9 frames at 0.3 EV; continuous burst, Single Burst Shooting (7 frames with a sequence length of 7,
+ReleaseMode3 9, not a bracket), self-timer, WB and DRO brackets. The same tags as the A7C II; nothing new needed.
+
+Still open: A7C II Focus Bracket Order [0→-→+] and Focus Brckt Saving Dest [New Folder]; ZV-E10.
 
 ## Afterwards
 
