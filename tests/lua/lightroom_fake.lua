@@ -1,0 +1,98 @@
+--[[
+Stand-ins for the Lightroom SDK calls the plugin makes, so its Lightroom-facing code runs under plain Lua.
+Installs a global `import`, `_PLUGIN` and `WIN_ENV`, and returns `state`, which tests reset and inspect:
+  state.folder      what the folder picker returns
+  state.confirm     what LrDialogs.confirm returns ("ok" or "cancel")
+  state.messages    dialogs shown: { title, text, style }
+  state.catalog     photos added: { path, leader, position }; byPath indexes them
+]]
+
+local state = {}
+
+function state.reset(folder)
+    state.folder = folder
+    state.confirm = "ok"
+    state.messages = {}
+    state.catalog = { photos = {}, byPath = {} }
+end
+
+local catalog = {}
+
+function catalog:findPhotoByPath(path)
+    return state.catalog.byPath[path]
+end
+
+function catalog:addPhoto(path, leader, position)
+    if state.catalog.byPath[path] then error("The photo is already in the catalog: " .. path) end
+    local photo = { path = path, leader = leader, position = position }
+    table.insert(state.catalog.photos, photo)
+    state.catalog.byPath[path] = photo
+    return photo
+end
+
+function catalog:withWriteAccessDo(_, work)
+    work()
+    return "executed"
+end
+
+local modules = {
+    LrApplication = { activeCatalog = function() return catalog end },
+    LrDialogs = {
+        runOpenPanel = function() return state.folder and { state.folder } end,
+        confirm = function() return state.confirm end,
+        message = function(title, text, style)
+            table.insert(state.messages, { title = title, text = text, style = style })
+        end,
+        attachErrorDialogToFunctionContext = function() end,
+    },
+    LrFunctionContext = {
+        postAsyncTaskWithContext = function(_, fn) fn({}) end,
+    },
+    LrProgressScope = setmetatable({}, { __call = function()
+        return {
+            done = function() end,
+            setCancelable = function() end,
+            isCanceled = function() return false end,
+            setPortionComplete = function() end,
+        }
+    end }),
+    LrTasks = {
+        startAsyncTask = function(fn) fn() end,
+        pcall = pcall,
+        -- os.execute returns a number in Lua 5.1 and (ok, "exit", code) from 5.2 on.
+        execute = function(command)
+            local a, _, code = os.execute(command)
+            if type(a) == "number" then return a end
+            return code or (a and 0 or 1)
+        end,
+    },
+    LrPathUtils = {
+        child = function(path, name) return path .. "/" .. name end,
+        getStandardFilePath = function() return os.getenv("TMPDIR") or "/tmp" end,
+    },
+    LrFileUtils = {
+        exists = function(path)
+            local file = io.open(path, "rb")
+            if file then file:close() return "file" end
+            return false
+        end,
+        readFile = function(path)
+            local file = io.open(path, "rb")
+            local text = file:read("*a")
+            file:close()
+            return text
+        end,
+        delete = function(path) os.remove(path) end,
+        chooseUniqueFileName = function(path) return path .. "-" .. tostring(os.time()) .. "-" .. math.random(1e6) end,
+    },
+}
+
+function import(name)
+    return assert(modules[name], "no fake for " .. name)
+end
+
+_PLUGIN = { path = TEST_ROOT .. "/auto-stacker.lrdevplugin" }
+WIN_ENV = false
+
+state.reset(nil)
+return state

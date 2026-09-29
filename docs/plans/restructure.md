@@ -37,7 +37,8 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    it inside Lightroom, and `Summary.lua` writes the result text, including the request for sample photos. The
    tag list moved to the plugin (`auto-stacker.lrdevplugin/tags.args`). A new menu item, *Preview Brackets in
    Folder…*, reports what would be stacked without importing. `tests/lua/test_photos.lua` runs the same command on
-   the test photos and matches the fixtures. Not yet checked: running inside Lightroom, on macOS and on Windows.
+   the test photos and matches the fixtures. Checked in Lightroom Classic on macOS: the test photos (10 brackets
+   in 34 photos) and a 364-photo folder on a network drive (122 brackets). Not yet checked on Windows.
 3. **One-step import, two menu items.** The wording that differs comes first:
    - *Import Only Bracketed Photos, as Stacks…*: only frames in detected sequences (the current behaviour).
    - *Import Entire Folder, Brackets as Stacks…*: every photo; single shots are imported as normal, and photos
@@ -46,6 +47,14 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    Both show a folder picker and progress, then a summary. When a brand's rules have not been tested on real photos,
    the summary says so and asks the user to share sample photos (anonymised is fine), pointing to the README's Help
    Wanted section. The `groups.txt` file goes away.
+
+   *Done (2026-09-29), not yet tried in Lightroom.* `Import.lua` runs both menu items: folder picker, metadata read,
+   a confirmation with what will be imported, a cancellable progress bar, and a report ending with how to merge the
+   stacks. `ImportPlan.lua` decides what to import: brackets whose photos are partly in the catalog already are
+   left out whole, since Lightroom cannot add to an existing stack. Each stack has its base exposure on top (the
+   middle exposure; the brighter middle frame for a bracket stopped early). `tests/lua/lightroom_fake.lua` stands
+   in for the SDK so `test_lightroom_import.lua` runs the real import code on the test photos. The old
+   *Import from Groups File* item stays until step 4, because the cleanup script still reads `groups.txt`.
 4. **Cleanup in the plugin.** Port "remove redundant exposures after HDR merge". First check what the SDK allows for
    removing photos from the catalog; if it cannot, document the manual step.
 5. **Remove Python.** Delete the scripts, `requirements.txt` and the pytest suite (fixture checks move to Lua); CI runs

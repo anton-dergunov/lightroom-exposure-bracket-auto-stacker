@@ -2,8 +2,9 @@
 Finds bracketed sequences in exiftool output (-j -n -G1 -a with tags.args).
 
 Grouping.group(frames) takes the decoded list of frames and returns:
-  groups    list of { frames, kind, vendor, validated, complete, length }, frames in shot order.
+  groups    list of { frames, kind, vendor, validated, complete, length, base }, frames in shot order.
             complete is true or false when the sequence length is known, nil otherwise.
+            base is the index of the frame at the base exposure (the middle of the bracket).
   warnings  list of strings.
 Pure Lua 5.1 with no Lightroom dependency, so it runs the same in the plugin and in the tests.
 ]]
@@ -130,6 +131,38 @@ local function sortByShotOrder(frames)
     return keyed
 end
 
+-- Index of the frame at the middle exposure: by the vendor's EV offset, else EXIF exposure compensation, else
+-- exposure time. The first measure that differs between frames decides; if none does, the first frame.
+-- With an even count (a bracket stopped early, such as 0 and -1 EV) the brighter of the two middle frames wins,
+-- which is the 0 EV frame in both orders cameras shoot (0,-,+ and -,0,+).
+local function baseIndex(vendor, frames)
+    local measures = {
+        function(frame) return read(frame, vendor.offset) end,
+        function(frame) return firstNumber(frame["ExifIFD:ExposureCompensation"]) end,
+        function(frame) return firstNumber(frame["ExifIFD:ExposureTime"]) end,
+    }
+    for _, measure in ipairs(measures) do
+        local values, distinct, complete = {}, {}, true
+        for i, frame in ipairs(frames) do
+            values[i] = measure(frame)
+            if values[i] == nil then complete = false break end
+            distinct[values[i]] = true
+        end
+        local count = 0
+        for _ in pairs(distinct) do count = count + 1 end
+        if complete and count > 1 then
+            local sorted = {}
+            for i, value in ipairs(values) do sorted[i] = value end
+            table.sort(sorted)
+            local median = sorted[math.floor(#sorted / 2) + 1]
+            for i, value in ipairs(values) do
+                if value == median then return i end
+            end
+        end
+    end
+    return 1
+end
+
 -- Whether `shot` starts a new sequence rather than continuing `current`.
 local function startsNew(vendor, current, shot)
     if not current or current.kind ~= shot.kind then return true end
@@ -167,6 +200,7 @@ function Grouping.group(frames)
                     vendor = vendor.name,
                     validated = vendor.validated,
                     length = length,
+                    base = baseIndex(vendor, current.frames),
                 }
                 if length then
                     group.complete = #current.frames == length and current.firstPosition ~= false

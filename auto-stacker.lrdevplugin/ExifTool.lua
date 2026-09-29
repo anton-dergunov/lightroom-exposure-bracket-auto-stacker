@@ -73,6 +73,12 @@ function ExifTool.readFolder(folder, recursive)
     if #frames == 0 and status ~= 0 and errors and not errors:match("^%s*$") then
         return nil, "exiftool failed: " .. errors
     end
+    -- exiftool reports Windows paths with forward slashes; Lightroom's catalog expects backslashes.
+    if platform == "win" then
+        for _, frame in ipairs(frames) do
+            if frame.SourceFile then frame.SourceFile = frame.SourceFile:gsub("/", "\\") end
+        end
+    end
     return frames
 end
 
