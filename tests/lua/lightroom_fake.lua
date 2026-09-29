@@ -6,6 +6,8 @@ Installs a global `import`, `_PLUGIN` and `WIN_ENV`, and returns `state`, which 
   state.messages    dialogs shown: { title, text, style }
   state.catalog     photos added: { path, leader, position }; byPath indexes them
   state.sources     folder paths last passed to catalog:setActiveSources
+  state.targets     photos catalog:getTargetPhotos returns (default: every photo)
+Photos have the LrPhoto methods the plugin uses; tests set photo.exposureBias and photo.shutterSpeed directly.
 ]]
 
 local state = {}
@@ -16,6 +18,7 @@ function state.reset(folder)
     state.messages = {}
     state.catalog = { photos = {}, byPath = {} }
     state.sources = nil
+    state.targets = nil
 end
 
 local catalog = {}
@@ -24,9 +27,36 @@ function catalog:findPhotoByPath(path)
     return state.catalog.byPath[path]
 end
 
+local Photo = {}
+Photo.__index = Photo
+
+function Photo:top() return self.leader or self end
+
+function Photo:members()
+    local top, list = self:top(), {}
+    for _, photo in ipairs(state.catalog.photos) do
+        if photo:top() == top then list[#list + 1] = photo end
+    end
+    return list
+end
+
+function Photo:getRawMetadata(key)
+    if key == "isInStackInFolder" then return #self:members() > 1 end
+    if key == "topOfStackInFolderContainingPhoto" then return self:top() end
+    if key == "stackInFolderMembers" then return self:members() end
+    return self[key]
+end
+
+function Photo:setRawMetadata(key, value) self[key] = value end
+
+function catalog:getTargetPhotos()
+    return state.targets or state.catalog.photos
+end
+
 function catalog:addPhoto(path, leader, position)
     if state.catalog.byPath[path] then error("The photo is already in the catalog: " .. path) end
-    local photo = { path = path, leader = leader, position = position }
+    local photo = setmetatable({ path = path, leader = leader, position = position,
+        localIdentifier = #state.catalog.photos + 1, pickStatus = 0 }, Photo)
     table.insert(state.catalog.photos, photo)
     state.catalog.byPath[path] = photo
     return photo

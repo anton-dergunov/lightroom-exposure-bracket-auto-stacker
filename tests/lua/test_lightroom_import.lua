@@ -87,6 +87,35 @@ function tests.import_entire_folder_then_again()
     assert(last.text:find("4 bracketed sequences left out"), "second report details: " .. last.text)
 end
 
+function tests.reject_extra_exposures_after_merging()
+    if not available() then return end
+    fake.reset(photos .. "/sony-zv-1-chiltern")
+    Import.run(true)
+    -- EV values as Lightroom reads them (from the fixture), then HDR images for the two complete RAW brackets:
+    -- one merged with "Create Stack" (inside the stack), one without (next to it).
+    local ev = { ["03152"] = 0, ["03153"] = -1, ["03154"] = 0, ["03155"] = -1, ["03156"] = 1,
+                 ["03157"] = 0, ["03158"] = -1, ["03159"] = 1 }
+    for _, photo in ipairs(fake.catalog.photos) do
+        photo.exposureBias = ev[photo.path:match("DSC(%d+)")]
+        photo.shutterSpeed = 1 / 100
+    end
+    local raw = photos .. "/sony-zv-1-chiltern/RAW/"
+    local catalog = import('LrApplication').activeCatalog()
+    catalog:addPhoto(raw .. "DSC03154-HDR.dng", fake.catalog.byPath[raw .. "DSC03154.ARW"], "above")
+    catalog:addPhoto(raw .. "DSC03157-HDR.dng")
+
+    fake.confirm = "ok"
+    dofile(TEST_ROOT .. "/auto-stacker.lrdevplugin/RejectExposures.lua")
+
+    local rejected = {}
+    for _, photo in ipairs(fake.catalog.photos) do
+        if photo.pickStatus == -1 then rejected[#rejected + 1] = photo.path:match("[^/]+$") end
+    end
+    table.sort(rejected)
+    eq(table.concat(rejected, " "), "DSC03155.ARW DSC03156.ARW DSC03158.ARW DSC03159.ARW", "rejected photos")
+    eq(fake.messages[#fake.messages].title, "Rejected 4 photos in 2 stacks.", "report")
+end
+
 function tests.cancel_at_confirmation_imports_nothing()
     if not available() then return end
     fake.reset(photos .. "/sony-a7c-ii-greenwich")

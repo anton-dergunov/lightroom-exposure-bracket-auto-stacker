@@ -131,20 +131,15 @@ local function sortByShotOrder(frames)
     return keyed
 end
 
--- Index of the frame at the middle exposure: by the vendor's EV offset, else EXIF exposure compensation, else
--- exposure time. The first measure that differs between frames decides; if none does, the first frame.
--- With an even count (a bracket stopped early, such as 0 and -1 EV) the brighter of the two middle frames wins,
+-- Index of the item at the middle exposure. `measures` are functions(item) returning a number, tried in order: the
+-- first one that is known for every item and differs between them decides. If none does, the first item.
+-- With an even count (a bracket stopped early, such as 0 and -1 EV) the brighter of the two middle items wins,
 -- which is the 0 EV frame in both orders cameras shoot (0,-,+ and -,0,+).
-local function baseIndex(vendor, frames)
-    local measures = {
-        function(frame) return read(frame, vendor.offset) end,
-        function(frame) return firstNumber(frame["ExifIFD:ExposureCompensation"]) end,
-        function(frame) return firstNumber(frame["ExifIFD:ExposureTime"]) end,
-    }
+function Grouping.middleIndex(items, measures)
     for _, measure in ipairs(measures) do
         local values, distinct, complete = {}, {}, true
-        for i, frame in ipairs(frames) do
-            values[i] = measure(frame)
+        for i, item in ipairs(items) do
+            values[i] = measure(item)
             if values[i] == nil then complete = false break end
             distinct[values[i]] = true
         end
@@ -161,6 +156,15 @@ local function baseIndex(vendor, frames)
         end
     end
     return 1
+end
+
+-- The base exposure of a group: by the vendor's EV offset, else EXIF exposure compensation, else exposure time.
+local function baseIndex(vendor, frames)
+    return Grouping.middleIndex(frames, {
+        function(frame) return read(frame, vendor.offset) end,
+        function(frame) return firstNumber(frame["ExifIFD:ExposureCompensation"]) end,
+        function(frame) return firstNumber(frame["ExifIFD:ExposureTime"]) end,
+    })
 end
 
 -- Whether `shot` starts a new sequence rather than continuing `current`.

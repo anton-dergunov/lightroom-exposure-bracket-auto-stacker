@@ -17,8 +17,8 @@ return {
 		    file = "PreviewBrackets.lua",
 		},
 		{
-		    title = "Import from Groups File (Python Workflow)...",
-		    file = "AutoStack.lua",
+		    title = "Reject Extra Exposures After HDR Merge...",
+		    file = "RejectExposures.lua",
 		},
 	},
 	VERSION = { major=0, minor=0, revision=1, build="", },

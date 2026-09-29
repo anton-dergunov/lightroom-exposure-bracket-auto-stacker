@@ -63,8 +63,20 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
    folders it imported into (`catalog:setActiveSources`) and the report names them.
 4. **Cleanup in the plugin.** Port "remove redundant exposures after HDR merge". First check what the SDK allows for
    removing photos from the catalog; if it cannot, document the manual step.
+
+   *Done (2026-09-29), not yet tried in Lightroom.* The SDK cannot remove photos from the catalog, and moving files
+   behind Lightroom's back leaves them marked missing. Instead, *Reject Extra Exposures After HDR Merge…* flags the
+   source photos of merged stacks as rejected (keeping the base exposure, or rejecting all of them), and Lightroom's
+   own *Photo > Delete Rejected Photos* removes them from the catalog or moves the files to the Trash. It works on
+   the selected photos, or all photos in view, and recognises an HDR image inside the stack ("Create Stack") or
+   next to it. This replaces the Python script's safety folder with the Trash.
 5. **Remove Python.** Delete the scripts, `requirements.txt` and the pytest suite (fixture checks move to Lua); CI runs
    the Lua tests only. Update the README install and usage sections.
+
+   *Done (2026-09-29).* The Python scripts, their tests and the *Import from Groups File* item are gone; the
+   fixture format and tag-list checks now run in `tests/lua/run.lua`, and CI runs only the Lua tests.
+   `tools/package.sh` builds the release zip (`dist/auto-stacker-<version>.zip`, ExifTool included). The README
+   describes installing from that zip and the new menu items. Publishing the first release is still to do.
 6. **Merge trigger research.** Can the plugin start HDR merge, or can the headless Shift+Cmd+H merge be scripted? If
    not, document the shortcut prominently. Known so far:
    - The SDK cannot collapse or expand stacks, so "Collapse All Stacks" stays a manual step.
@@ -72,6 +84,12 @@ fixture tests pass and *Lightroom* when the full import has been checked with re
      selected leaders of different scenes into one image. Only worth doing if collapsed state can be checked first
      (`photo:getRawMetadata("stackInFolderIsCollapsed")` is readable).
    - After importing, the Library already shows the imported folders; with several folders it shows all of them.
+
+   *Closed (2026-09-29).* The SDK has no way to start Photo Merge (confirmed on Adobe's forums); keystroke
+   automation (AutoHotkey, AppleScript) would be fragile, so it is not pursued. Documented instead: collapse the
+   stacks, select them and choose Photo Merge > HDR once, and Lightroom merges each stack with the last settings;
+   Ctrl+H opens HDR merge and Ctrl+Shift+H merges without the dialog (Control on macOS); "Create Stack" in the HDR
+   dialog stacks each result with its sources.
 7. **Rename** the project, based on what focus-bracket support turns out to cover.
 8. **Benchmark** time-based, visual-similarity and metadata grouping on labelled photos.
 

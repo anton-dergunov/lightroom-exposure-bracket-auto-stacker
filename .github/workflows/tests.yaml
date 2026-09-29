@@ -3,21 +3,6 @@ name: Tests
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-      - name: Install dependencies
-        run: pip install -r requirements.txt pytest
-      - name: Run unit tests
-        run: pytest -v
-        env:
-          PYTHONPATH: .
-
   lua:
     runs-on: ubuntu-latest
     steps:
@@ -26,5 +11,5 @@ jobs:
         uses: leafo/gh-actions-lua@v10
         with:
           luaVersion: '5.1.5'
-      - name: Run grouping tests
+      - name: Run tests
         run: lua tests/lua/run.lua tests/fixtures/*/*.json tests/lua/test_*.lua

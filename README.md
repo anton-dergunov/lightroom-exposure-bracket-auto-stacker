@@ -28,15 +28,18 @@ Alternative HDR software exists (e.g., [LR/Enfuse](https://www.photographers-too
 
 ## How It Works
 
-The solution is divided into two components:
+The plugin reads each photo's metadata with [ExifTool](https://exiftool.org/), which is included, and uses the
+information the camera records about its drive mode to find which frames belong to the same bracketed sequence, how
+many frames it has, and which frame is the base exposure. It then imports the photos into Lightroom Classic with each
+sequence as a stack, the base exposure on top, ready for Lightroom's own HDR merge.
 
-- **Python Script**:  
-  Detects exposure-bracketed image groups using EXIF metadata. It then produces a descriptive file that outlines the detected groups. This method is more reliable than relying solely on capture timing.
+Grouping works from what the camera wrote, not from timing, so it keeps sequences apart that were shot seconds apart,
+keeps together long exposures that span several seconds, and never mixes a RAW file with its JPEG copy.
 
-- **Lightroom Plugin**:  
-  Reads the group description file and imports the grouped images into Lightroom, automatically stacking them in preparation for HDR processing. Once the stacks are created, you can use Lightroom's built-in HDR merge functionality to batch process the stacks.
-
-**Note:** The current implementation supports EXIF metadata from Sony cameras only. It has been tested on recent mirrorless and point-and-shoot models. Support for other brands is in progress; see [Camera support](docs/camera-support.md) for what each brand records and how far testing has got.
+**Supported cameras:** Sony has been tested in Lightroom. Canon, Nikon, Panasonic and Pentax have been tested against
+metadata from real bracketed sequences. OM System / Olympus and Fujifilm follow each camera maker's documentation but
+have not been tested on real photos yet; the plugin says so when it finds them. See
+[Camera support](docs/camera-support.md) for details.
 
 ## Help Wanted: Sample Photos
 
@@ -54,78 +57,54 @@ What to send: every frame of the sequence, straight from the camera (RAW or the 
 
 ## Installation
 
-### Python Script
+Lightroom Classic is required; the cloud-based Lightroom does not support plugins.
 
-1. **Install Python** (if not already installed).
-2. **Clone the Repository:**
-   ```sh
-   git clone https://github.com/anton-dergunov/lightroom-hdr-auto-stack.git
-   cd lightroom-hdr-auto-stack
-   ```
-3. **Install Dependencies:**
-   ```sh
-   pip install -r requirements.txt
-   ```
+1. **Get the plugin:** download `auto-stacker-<version>.zip` from the
+   [latest release](https://github.com/anton-dergunov/lightroom-exposure-bracket-auto-stacker/releases/latest) and
+   unzip it. It contains the `auto-stacker.lrplugin` folder, ExifTool included.
+2. In Lightroom Classic, choose **File > Plug-in Manager**, click **Add**, select the `auto-stacker.lrplugin` folder
+   and make sure the plugin is enabled.
 
-### Lightroom Plugin
+Nothing else needs to be installed.
 
-1. **Launch Adobe Lightroom Classic**  
-   (Note: The non-Classic version does not support plugins as of now.)
-2. **Open Plug-in Manager:**
-   - Navigate to **File > Plug-in Manager**.
-3. **Add the Plugin:**
-   - Click **Add** and select the `auto-stacker.lrdevplugin` folder.
-   - Enable the plugin once added.
-4. **Download exiftool into the plugin** (once, when installing from the source code):
-   ```sh
-   sh tools/fetch-exiftool.sh
-   ```
-   **Library > Plugin Extras > Preview Brackets in Folder...** then shows which bracketed sequences a folder
-   contains, without importing anything and without needing Python.
+**From the source code** instead: clone the repository, run `sh tools/fetch-exiftool.sh` once to download ExifTool
+into the plugin, and add the `auto-stacker.lrdevplugin` folder in the Plug-in Manager.
 
 ## Usage
 
-1. **Detect Bracketed Images and Generate Groups File:**
-   Run the Python script to analyze your photos and create a group description file.
-   ```sh
-   python group_sony_bracketed_photos.py --input /path/to/photos --output /path/to/groups.txt
-   ```
-   You may specify a different photo file extension with `--extension` (default is `ARW`).
+All commands are under **Library > Plug-in Extras**.
 
-2. **Import and Auto-Stack in Lightroom:**
-   - In Lightroom Classic, go to **Library > Plugin Extras > Import and Auto Stack Photos**.
-   - Provide the path to the generated groups file.
-   - Wait for the images to be imported and automatically stacked.
+1. **Import and stack.** Choose one of:
+   - **Import Only Bracketed Photos, as Stacks...**: imports just the bracketed sequences of a folder, each as a
+     stack. Useful when you edit elsewhere and use Lightroom Classic only for HDR merging.
+   - **Import Entire Folder, Brackets as Stacks...**: imports every photo of the folder, with the bracketed
+     sequences stacked.
 
-3. **Batch Create HDR Images:**
-   - Navigate to the folder containing the imported stacks.
-   - Collapse all stacks via **Photo > Stacking > Collapse All Stacks**.
-   - Select all stacks (**Edit > Select All**) and execute **Photo > Photo Merge > HDR...**.
-   - Lightroom will initiate a batch job to merge each stack with previously used settings (e.g., Deghost Amount). Please note that this process can be time-consuming when handling a large number of images.
-   - This batch processing ensures that all HDR images are created upfront, allowing for a streamlined photo culling process where HDR and original exposures are available for direct comparison.
+   Choose the folder (subfolders are included). The plugin shows what it found and asks before importing. Photos
+   already in the catalog are skipped; a sequence with any photo already imported is left out, because Lightroom
+   can only stack photos while importing them. Afterwards the Library shows the folders the photos went to. Photos
+   imported this way do not appear in Lightroom's *Previous Import* collection.
 
-4. **Access the Final HDR Images:**
-   - If you are using Lightroom Classic, you can continue working with the HDR images directly within the library. To quickly find the HDR images, you can filter the Library View by the `.dng` extension.
-   - If you primarily use the the non-Classic version of Lightroom, you can export the created HDR images. The generated HDR images are saved in the same folder as the original files, typically named using the first image’s filename followed by `-HDR.dng`, so you can copy them directly as well.
+   **Preview Brackets in Folder...** shows what a folder contains without importing anything.
 
-5. **(Optional) Clean Up Redundant Exposures:**
-   After HDR images have been generated in Lightroom Classic, you can clean up the 
-   redundant over- and under-exposed RAW files while keeping only the properly exposed 
-   frame and the HDR result.
+2. **Merge all stacks into HDR images.**
+   - Choose **Photo > Stacking > Collapse All Stacks**.
+   - Select the stacks and choose **Photo > Photo Merge > HDR...** (Ctrl+H; Control+H on macOS). Lightroom merges
+     each stack in turn, using the settings you chose last (such as Deghost Amount). Ctrl+Shift+H (Control+Shift+H on
+     macOS) merges without showing the dialog.
+   - Turn on **Create Stack** in the HDR dialog to keep each HDR image in the stack with its source photos.
+   - Merging many stacks takes a while, but afterwards every HDR image is ready to compare with its source photos
+     while culling.
 
-   Run the cleanup script with your previously generated `groups.txt` file:
+3. **Find the HDR images.** They are saved next to the source photos and named after one of them, ending in
+   `-HDR.dng`. To list only them, filter the Library by file type DNG. If you edit in the cloud-based Lightroom,
+   export them or copy the files.
 
-   ```sh
-   python cleanup_sony_bracketed_photos.py --groups /path/to/groups.txt
-   ```
-
-   By default, redundant RAW files are moved into a safety subdirectory
-   named _over_under_exposed inside each photo folder.
-
-   If you prefer to delete them permanently, use:
-   ```sh
-   python cleanup_sony_bracketed_photos.py --groups /path/to/groups.txt --action delete
-   ```
+4. **(Optional) Remove the extra exposures.** Select the merged stacks (or show their folder with nothing selected)
+   and choose **Reject Extra Exposures After HDR Merge...**. It flags the over- and under-exposed photos of each
+   merged stack as rejected and keeps the base exposure, or flags all source photos if you choose so. Stacks without
+   an HDR image are left alone. Then choose **Photo > Delete Rejected Photos**: *Remove* takes them out of the
+   catalog, *Delete from Disk* also moves the files to the Trash.
 
 ## Implementation Q&A
 
@@ -135,17 +114,23 @@ Below are some frequently asked questions regarding the design and implementatio
 
 **A:** No. The auto-stacking process requires the images to be imported during the workflow. The Lightroom SDK does not currently expose an API for stacking images already present in the library. The tool [Any Source](https://johnrellis.com/lightroom/anysource.htm) implements workarounds to make it work, but their functionality is similar to Lightroom’s native "Auto-Stack by Capture Time" and does not leverage EXIF metadata for robust grouping.
 
-### Q: Why is there a separate Python script for group detection? Why not integrate it into the Lightroom plugin?  
+### Q: Why does the plugin import the photos instead of stacking photos I have already imported?
 
-**A:** Group detection relies on EXIF metadata. While the Lightroom SDK provides an API for accessing this metadata, it can only be used for photos that are already in the library. However, since stacking can only be performed at the time of import (see previous question), the plugin cannot use this API for grouping. For this reason, I chose to handle group detection separately in a dedicated Python script.
+**A:** The Lightroom SDK can create stacks only while importing photos, so grouping and importing happen in one
+step. For the same reason the plugin reads the metadata from the files with ExifTool rather than from the catalog.
+
+### Q: Can the plugin start the HDR merge itself?
+
+**A:** No. The Lightroom SDK does not let plugins start Photo Merge, collapse stacks or remove photos from the
+catalog, so those steps use Lightroom's own commands as described above.
 
 ### Q: Why is it required to Collapse All Stacks before merging them?  
 
-**A:** This step is required so that HDR merge is correctly applied to each stack. Unfortunately, Lightroom SDK does not provide a way to collapse stacks programmatically, so it must be done via the menu.
+**A:** This step is required so that HDR merge is correctly applied to each stack. Plugins cannot collapse stacks, so it must be done from the menu.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](LICENSE). The plugin includes [ExifTool](https://exiftool.org/) by Phil Harvey, which is free software distributed under the same terms as Perl itself.
 
 ## Disclaimer
 
