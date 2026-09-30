@@ -34,7 +34,9 @@ many frames it has, and which frame is the base exposure. It then imports the ph
 sequence as a stack, the base exposure on top, ready for Lightroom's own HDR merge.
 
 Grouping works from what the camera wrote, not from timing, so it keeps sequences apart that were shot seconds apart,
-keeps together long exposures that span several seconds, and never mixes a RAW file with its JPEG copy.
+keeps together long exposures that span several seconds, and never mixes a RAW file with its JPEG copy. On seven
+real shoots with 92 bracketed sequences, it stacked all of them correctly, while the best single time setting for
+Lightroom's own Auto-Stack got 74 right and made 93 wrong stacks; see the [benchmark](docs/benchmark.md).
 
 **Supported cameras:** Sony has been tested in Lightroom. Canon, Nikon, Panasonic and Pentax have been tested against
 metadata from real bracketed sequences. OM System / Olympus and Fujifilm follow each camera maker's documentation but
